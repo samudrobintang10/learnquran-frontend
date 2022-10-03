@@ -1,1 +1,1 @@
-# learnquran-frontend
+# Learn Quran Front-end Development
