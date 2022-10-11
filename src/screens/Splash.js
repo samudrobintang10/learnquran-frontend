@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Button from "../components/atoms/Button";
 import Color from "../utilities/Color";
 
-export default function HomeScreen({ navigation }) {
+export default function Splash({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('Login');
