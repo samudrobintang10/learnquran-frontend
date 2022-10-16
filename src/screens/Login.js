@@ -26,7 +26,7 @@ export default function Login({ navigation }) {
         <Gap height={12} />
         <Link title={"Lupa Password?"} align={"right"} size={15} />
         <Gap height={36} />
-        <Button title={"MASUK"} />
+        <Button title={"MASUK"} onPress={() => navigation.navigate("ListKelas")}/>
         <Gap height={32} />
         <View style={styles.borderLine} />
         <Gap height={36} />
