@@ -6,7 +6,7 @@ import Input from "../components/atoms/Input";
 import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
 
-export default function Login() {
+export default function Login({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
@@ -26,7 +26,7 @@ export default function Login() {
         <Gap height={12} />
         <Link title={"Lupa Password?"} align={"right"} size={15} />
         <Gap height={36} />
-        <Button title={"MASUK"} />
+        <Button title={"MASUK"} onPress={() => navigation.navigate("ListKelas")}/>
         <Gap height={32} />
         <View style={styles.borderLine}/>
         <Gap height={36} />
