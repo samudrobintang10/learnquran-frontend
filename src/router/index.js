@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Splash from "../screens/Splash";
 import Login from "../screens/Login";
+import Register from "../screens/Register";
 import ListKelas from "../screens/ListKelas";
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,11 @@ export default function Router() {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
         options={{ headerShown: false }}
       />
       <Stack.Screen

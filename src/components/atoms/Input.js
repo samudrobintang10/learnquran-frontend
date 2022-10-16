@@ -8,6 +8,7 @@ const Input = ({
   onChangeText,
   secureTextEntry,
   disable,
+  keyboardType
 }) => {
   const [border, setBorder] = useState(Color.lightGray);
   const onFocusForm = () => {
@@ -24,6 +25,7 @@ const Input = ({
         onBlur={onBlurForm}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType ? keyboardType : 'default'}
       />
     </View>
   );
