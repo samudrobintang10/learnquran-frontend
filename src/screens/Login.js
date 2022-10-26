@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
 import Input from "../components/atoms/Input";
 import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase-config";
+import { saveItem } from "../config/secureStorage";
+import { useDispatch } from "react-redux";
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSignIn = () => {
+    dispatch({ type: "SET_LOADING", value: true });
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        saveItem("accessToken", user.accessToken);
+        dispatch({ type: "SET_LOADING", value: false });
+        navigation.replace("LandingPage");
+      })
+      .catch((error) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        alert(error.message);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
@@ -20,13 +43,21 @@ export default function Login({ navigation }) {
           Masukan akun yang kamu punya untuk terauntentikasi ke dalam sistem
         </Text>
         <Gap height={40} />
-        <Input placeholder={"Email"} keyboardType={'email-address'}/>
+        <Input
+          placeholder={"Email"}
+          keyboardType={"email-address"}
+          onChangeText={(text) => setEmail(text)}
+        />
         <Gap height={20} />
-        <Input placeholder={"Password"} secureTextEntry />
+        <Input
+          placeholder={"Password"}
+          secureTextEntry
+          onChangeText={(text) => setPassword(text)}
+        />
         <Gap height={12} />
         <Link title={"Lupa Password?"} align={"right"} size={15} />
         <Gap height={36} />
-        <Button title={"MASUK"} onPress={() => navigation.navigate("ListKelas")}/>
+        <Button title={"MASUK"} onPress={() => handleSignIn()} />
         <Gap height={32} />
         <View style={styles.borderLine} />
         <Gap height={36} />
@@ -36,7 +67,7 @@ export default function Login({ navigation }) {
           title={"Daftar Sekarang"}
           align={"center"}
           size={15}
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.replace("Register")}
         />
       </ScrollView>
     </View>
