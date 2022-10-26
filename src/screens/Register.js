@@ -6,24 +6,38 @@ import Input from "../components/atoms/Input";
 import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
 import InputSelect from "../components/atoms/InputSelect";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../config/firebase-config";
+import axios from "axios";
+import { API_KEY, API_URL } from "@env";
+import { saveItem } from "../config/secureStorage";
+import { useDispatch } from "react-redux";
 
 const genderOptions = [
   {
     label: "Ikhwan",
-    value: "ikhwan",
+    value: 0,
   },
-  { label: "Akhwan", value: "Akhwan" },
+  { label: "Akhwan", value: 1 },
 ];
 
 const roleOptions = [
   {
     label: "Pembelajar",
-    value: "pembelajar",
+    value: 0,
   },
-  { label: "Pengajar", value: "pengajar" },
+  { label: "Pengajar", value: 1 },
 ];
 
 export default function Register({ navigation }) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState();
   const [role, setRole] = useState();
   const setSelectedGender = (genderValue) => {
@@ -32,6 +46,47 @@ export default function Register({ navigation }) {
   const setSelectedRole = (roleValue) => {
     setRole(roleValue);
   };
+  const dispatch = useDispatch();
+
+  const handleSignUp = async () => {
+    dispatch({ type: "SET_LOADING", value: true });
+    if (password !== passwordConfirmation) {
+      alert("Konfirmasi password tidak sama dengan password");
+    } else {
+      try {
+        const response = await axios.post(
+          `https://learquran-dev-1-lcbpygkjcq-as.a.run.app/api/v1/user/register?condition=` +
+            role,
+          {
+            email_address: email,
+            password: password,
+            name: fullName,
+            gender: gender,
+            phone_number: phoneNumber,
+          },
+          { headers: { apiKey: API_KEY } }
+        );
+        if (response.status === 200) {
+          alert("Selamat Datang", "Akun anda telah berhasil dibuat");
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              const user = userCredential.user;
+              saveItem("accessToken", user.accessToken);
+              dispatch({ type: "SET_LOADING", value: false });
+              navigation.replace("LandingPage");
+            })
+            .catch((error) => {
+              dispatch({ type: "SET_LOADING", value: false });
+              console.log(error);
+            });
+        }
+      } catch (error) {
+        dispatch({ type: "SET_LOADING", value: false });
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
@@ -45,13 +100,28 @@ export default function Register({ navigation }) {
           Masukan dari diri kamu untuk mendaftarkan diri ke dalam sistem
         </Text>
         <Gap height={40} />
-        <Input placeholder={"Nama Lengkap"} />
+        <Input
+          placeholder={"Nama Lengkap"}
+          onChangeText={(text) => setFullName(text)}
+        />
         <Gap height={20} />
-        <Input placeholder={"Email"} keyboardType={"email-address"} />
+        <Input
+          placeholder={"Email"}
+          keyboardType={"email-address"}
+          onChangeText={(text) => setEmail(text)}
+        />
         <Gap height={20} />
-        <Input placeholder={"Password"} secureTextEntry />
+        <Input
+          placeholder={"Password"}
+          secureTextEntry
+          onChangeText={(text) => setPassword(text)}
+        />
         <Gap height={20} />
-        <Input placeholder={"Konfirmasi Password"} secureTextEntry />
+        <Input
+          placeholder={"Konfirmasi Password"}
+          secureTextEntry
+          onChangeText={(text) => setPasswordConfirmation(text)}
+        />
         <Gap height={20} />
         <InputSelect
           items={genderOptions}
@@ -60,7 +130,11 @@ export default function Register({ navigation }) {
           placeholder="Pilih Jenis Kelamin..."
         />
         <Gap height={20} />
-        <Input placeholder={"(+62) Nomor Telepon"} keyboardType={"numeric"} />
+        <Input
+          placeholder={"(+62) Nomor Telepon"}
+          keyboardType={"numeric"}
+          onChangeText={(text) => setPhoneNumber(text)}
+        />
         <Gap height={20} />
         <InputSelect
           items={roleOptions}
@@ -69,7 +143,7 @@ export default function Register({ navigation }) {
           placeholder="Pilih Role..."
         />
         <Gap height={36} />
-        <Button title={"MARI BELAJAR"} />
+        <Button title={"MARI BELAJAR"} onPress={() => handleSignUp()} />
         <Gap height={32} />
         <View style={styles.borderLine} />
         <Gap height={36} />
@@ -79,9 +153,9 @@ export default function Register({ navigation }) {
           title={"Login disini"}
           align={"center"}
           size={15}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.replace("Login")}
         />
-        <Gap height={80} />
+        <Gap height={60} />
       </ScrollView>
     </View>
   );

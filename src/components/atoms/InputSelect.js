@@ -22,7 +22,7 @@ const InputSelect = ({ placeholder, selectedValue, items, onValueChange }) => {
           style={styles.placeholder}
         />
         {items.map((item) => (
-          <Picker.Item label={item.label} value={item.value} />
+          <Picker.Item label={item.label} value={item.value} key={item.value} />
         ))}
       </Picker>
     </View>

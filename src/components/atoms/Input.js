@@ -25,6 +25,7 @@ const Input = ({
         onBlur={onBlurForm}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
+        onChangeText={onChangeText}
         keyboardType={keyboardType ? keyboardType : 'default'}
       />
     </View>
