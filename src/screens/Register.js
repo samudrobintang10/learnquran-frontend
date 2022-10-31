@@ -66,6 +66,7 @@ export default function Register({ navigation }) {
           },
           { headers: { apiKey: API_KEY } }
         );
+        console.log(response)
         if (response.status === 200) {
           alert("Selamat Datang", "Akun anda telah berhasil dibuat");
           signInWithEmailAndPassword(auth, email, password)
