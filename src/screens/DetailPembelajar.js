@@ -9,69 +9,68 @@ import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
 
 export default function DetailPembelajar({ navigation }) {
-    return (
-        <View style={styles.container}>
-            <Gap height={20} />
-            <View style={styles.firstrow}>
-                <Text style={styles.baseText}>
-                    Detail Pembelajar
-                </Text>
-            </View>
-            <Gap height={20} />
-            <ScrollView style={styles.content}>
-                <SimpleCardHeader 
-                    firstHeader={'Assalamualaikum,'} 
-                    secondHeader={'Akhi'} 
-                    nama={'Bintang Samudro'}
-                    firstButtonText={'Edit Profile'}
-                    secondButtonText={'Logout'}
-                    backgroundColor={Color.solidGreen}
-                    text={Color.solidGreen}
-                    ></SimpleCardHeader>
-                <Gap height={10} />
-                <View><Text style={styles.baseText2}>Kelas yang diikuti</Text></View>
-                <Gap height={10} />
-                <KartuDetail
-                judul ={'Kelas Mengaji 1'} 
-                deskripsi ={'Ustadz Rasyid'}>
-                </KartuDetail>
-                <Button title={"MASUK"} onPress={() => 
-                    navigation.navigate('LandingPage')} />
-
-            </ScrollView>
+  return (
+    <View style={styles.container}>
+      <Gap height={20} />
+      <View style={styles.firstrow}>
+        <Text style={styles.baseText}>Detail Pembelajar</Text>
+      </View>
+      <Gap height={20} />
+      <ScrollView style={styles.content}>
+        <SimpleCardHeader
+          firstHeader={"Assalamualaikum,"}
+          secondHeader={"Akhi"}
+          nama={"Bintang Samudro"}
+          firstButtonText={"Edit Profile"}
+          secondButtonText={"Logout"}
+          backgroundColor={Color.solidGreen}
+          text={Color.solidGreen}
+        ></SimpleCardHeader>
+        <Gap height={10} />
+        <View>
+          <Text style={styles.baseText2}>Kelas yang diikuti</Text>
         </View>
-    );
+        <Gap height={10} />
+        <KartuDetail
+          judul={"Kelas Mengaji 1"}
+          deskripsi={"Ustadz Rasyid"}
+        ></KartuDetail>
+        <Button
+          title={"MASUK"}
+          onPress={() => navigation.navigate("LandingPage")}
+        />
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        justifyContent: "center",
-    },
-    content: {
-        paddingLeft: 16,
-        paddingRight: 16,
-    },
-    baseText: {
-        fontSize: 20,
-        fontWeight: "500",
-        color: "#fff",
-        
-    },
-    baseText2: {
-        fontSize: 20,
-        fontWeight: "600",
-        color: "#000",
-        paddingLeft: 10
-    },
-    firstrow: {
-        
-        backgroundColor: Color.solidGreen,
-        justifyContent: "center",
-        alignItems: "center",
-        borderBottomStartRadius: 10,
-        borderBottomEndRadius: 10,
-        height: 100
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+  },
+  content: {
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  baseText: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: "#fff",
+  },
+  baseText2: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#000",
+    paddingLeft: 10,
+  },
+  firstrow: {
+    backgroundColor: Color.solidGreen,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomStartRadius: 10,
+    borderBottomEndRadius: 10,
+    height: 100,
+  },
 });
