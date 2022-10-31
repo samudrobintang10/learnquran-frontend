@@ -1,22 +1,24 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import Color from "../../utilities/Color";
 import { Card } from 'react-native-paper';
 import ButtonSmall from "./ButtonSmall";
+// import ReactPlayer from 'react-player'
 
-export default function KartuDetail(props) {
-  const { judul, deskripsi, onPress } = props;
+export default function KartuSoal(props) {
+  const { judul, header, deskripsi } = props;
   return (
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.row}>
           <View style={{ justifyContent: 'center' }}>
             <Text style={styles.baseText}>{judul}</Text>
+            <Text style={styles.headerText}>{header}</Text>
             <Text style={styles.secondaryText}>{deskripsi}</Text>
           </View>
          
-          <View>
-            <ButtonSmall onPress={onPress} title={'Detail'} teritary></ButtonSmall>
-          </View>
+          {/* <View>
+            <Image source={require('../../../assets/mic1.png')}></Image>
+          </View> */}
         </View>
       </Card.Content>
     </Card>
@@ -47,5 +49,8 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: 'grey', fontSize: 12 
+  },
+  headerText: {
+    color: 'black', fontSize: 14
   }
 });

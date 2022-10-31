@@ -6,6 +6,7 @@ import KartuProfile from "../components/atoms/KartuProfile";
 import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
+import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
 
 export default function DetailPembelajar({ navigation }) {
     return (
@@ -18,10 +19,15 @@ export default function DetailPembelajar({ navigation }) {
             </View>
             <Gap height={20} />
             <ScrollView style={styles.content}>
-                <KartuProfile 
-                    text1={'Assalamualaikum,'} 
-                    text2={'Akhi'} 
-                    nama={'Bintang Samudro'}></KartuProfile>
+                <SimpleCardHeader 
+                    firstHeader={'Assalamualaikum,'} 
+                    secondHeader={'Akhi'} 
+                    nama={'Bintang Samudro'}
+                    firstButtonText={'Edit Profile'}
+                    secondButtonText={'Logout'}
+                    backgroundColor={Color.solidGreen}
+                    text={Color.solidGreen}
+                    ></SimpleCardHeader>
                 <Gap height={10} />
                 <View><Text style={styles.baseText2}>Kelas yang diikuti</Text></View>
                 <Gap height={10} />

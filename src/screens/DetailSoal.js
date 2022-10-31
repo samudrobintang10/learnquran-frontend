@@ -7,37 +7,22 @@ import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
+import KartuSoal from "../components/atoms/KartuSoal";
+import ReactPlayer from "react-player";
+import Kartu from "../components/atoms/Kartu";
 
-export default function DetailKelasPembelajar({ navigation }) {
+export default function DetailSoal() {
     return (
         <View style={styles.container}>
             <Gap height={20} />
             <View style={styles.firstrow}>
                 <Text style={styles.baseText}>
-                    Kelas Mengaji 1
+                    Detail Soal
                 </Text>
             </View>
             <Gap height={20} />
             <ScrollView style={styles.content}>
-                <SimpleCardHeader
-                    firstHeader={'Assalamualaikum,'}
-                    secondHeader={'Akhi'}
-                    nama={'Bintang Samudro'}
-                    firstButtonText={'Kelas Diikuti'}
-                    secondButtonText={'Keluar Kelas'}
-                    backgroundColor={Color.lightBlue}
-                    text={Color.lightBlue}
-                ></SimpleCardHeader>
-                <Gap height={10} />
-                <KartuDetail
-                    judul={'Tugas 1'}
-                    deskripsi={'Membaca Surat Al-Fatihah ayat 1 - 5'}
-                    onPress={() =>
-                        navigation.navigate('DetailSoal')}>
-                </KartuDetail>
-                <Button title={"MASUK"} onPress={() =>
-                    navigation.navigate('LandingPage')} />
-
+                <KartuSoal judul={'Soal 1'} header={'Al-Fatihah'} deskripsi={'Ayat 1-5'}></KartuSoal>
             </ScrollView>
         </View>
     );
@@ -57,7 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "500",
         color: "#fff",
-
+        
     },
     baseText2: {
         fontSize: 20,
@@ -66,7 +51,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     firstrow: {
-
+        
         backgroundColor: Color.solidGreen,
         justifyContent: "center",
         alignItems: "center",
