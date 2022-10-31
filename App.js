@@ -4,6 +4,7 @@ import Router from "./src/router";
 import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
 import Loading from "./src/components/molecules/Loading";
+import { LogBox } from 'react-native';
 
 const MainApp = () => {
   const stateGlobal = useSelector((state) => state);

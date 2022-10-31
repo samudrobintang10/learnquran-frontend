@@ -2,22 +2,29 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
-import Kartu from "../components/atoms/Kartu";
+import KartuProfile from "../components/atoms/KartuProfile";
+import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
+import ButtonRed from "../components/atoms/ButtonSmall";
+import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
+import KartuSoal from "../components/atoms/KartuSoal";
+import ReactPlayer from "react-player";
+import Kartu from "../components/atoms/Kartu";
 
-export default function ListKelas({ navigation }) {
+export default function DetailSoal() {
   return (
     <View style={styles.container}>
       <Gap height={20} />
       <View style={styles.firstrow}>
-        <Text style={styles.baseText}>
-          LIST KELAS
-        </Text>
+        <Text style={styles.baseText}>Detail Soal</Text>
       </View>
       <Gap height={20} />
       <ScrollView style={styles.content}>
-        <Kartu></Kartu>
-        <Button title={"MASUK"} onPress={() => navigation.navigate('LandingPage')} />
+        <KartuSoal
+          judul={"Soal 1"}
+          header={"Al-Fatihah"}
+          deskripsi={"Ayat 1-5"}
+        ></KartuSoal>
       </ScrollView>
     </View>
   );
@@ -34,16 +41,22 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
   baseText: {
-    fontSize: 24,
+    fontSize: 20,
+    fontWeight: "500",
+    color: "#fff",
+  },
+  baseText2: {
+    fontSize: 20,
     fontWeight: "600",
-    color: "#fff"
+    color: "#000",
+    paddingLeft: 10,
   },
   firstrow: {
-    flex: 0.125,
     backgroundColor: Color.solidGreen,
     justifyContent: "center",
     alignItems: "center",
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
+    height: 100,
   },
 });
