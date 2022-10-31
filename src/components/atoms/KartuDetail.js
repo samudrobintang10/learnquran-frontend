@@ -4,20 +4,18 @@ import { Card } from 'react-native-paper';
 import ButtonSmall from "./ButtonSmall";
 
 export default function Kartu(props) {
-  const { onPress, title } = props;
+  const { judul, deskripsi } = props;
   return (
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.row}>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={{ color: 'green', fontSize: 16 }}>Kelas Tajwid</Text>
-            <Text style={{ color: 'grey', fontSize: 12 }}>Ustadz Rasyid</Text>
+            <Text style={styles.baseText}>{judul}</Text>
+            <Text style={styles.secondaryText}>{deskripsi}</Text>
           </View>
+         
           <View>
-            <Text style={{ fontSize: 10 }}> <Text style={{ color: 'grey', fontSize: 10 }} >Kuota</Text> 1/10 </Text>
-          </View>
-          <View>
-            <ButtonSmall title={'Kelas Penuh'}></ButtonSmall>
+            <ButtonSmall title={'Detail'} teritary></ButtonSmall>
           </View>
         </View>
       </Card.Content>
@@ -33,14 +31,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    margin: 4,
-    padding: 5,
-    elevation: 3
+    margin: 1,
+    padding: 1,
+    elevation: 3,
+    shadowColor: 'black'  
   },
   buttonRed: {
     backgroundColor: "red", 
     borderRadius: 5, 
     color: 'white', 
     padding: 5
+  },
+  baseText: {
+    color: 'green', fontSize: 16 
+  },
+  secondaryText: {
+    color: 'grey', fontSize: 12 
   }
 });
