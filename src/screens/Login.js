@@ -7,7 +7,7 @@ import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
-import { saveItem } from "../config/secureStorage";
+import { saveItem } from "../utilities/secureStorage";
 import { useDispatch } from "react-redux";
 import { connectAuthEmulator } from "firebase/auth";
 
