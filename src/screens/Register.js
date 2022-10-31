@@ -13,8 +13,9 @@ import {
 import { auth } from "../config/firebase-config";
 import axios from "axios";
 import { API_KEY, API_URL } from "@env";
-import { saveItem } from "../config/secureStorage";
+import { saveItem } from "../utilities/secureStorage";
 import { useDispatch } from "react-redux";
+import { login, register } from "../services/auth.service";
 
 const genderOptions = [
   {
@@ -54,31 +55,18 @@ export default function Register({ navigation }) {
       alert("Konfirmasi password tidak sama dengan password");
     } else {
       try {
-        const response = await axios.post(
-          `https://learquran-dev-1-lcbpygkjcq-as.a.run.app/api/v1/user/register?condition=` +
-            role,
-          {
-            email_address: email,
-            password: password,
-            name: fullName,
-            gender: gender,
-            phone_number: phoneNumber,
-          },
-          { headers: { apiKey: API_KEY } }
+        const response = await register(
+          email,
+          password,
+          fullName,
+          gender,
+          phoneNumber,
+          role
         );
         if (response.status === 200) {
           alert("Selamat Datang", "Akun anda telah berhasil dibuat");
-          signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-              const user = userCredential.user;
-              saveItem("accessToken", user.accessToken);
-              dispatch({ type: "SET_LOADING", value: false });
-              navigation.replace("LandingPage");
-            })
-            .catch((error) => {
-              dispatch({ type: "SET_LOADING", value: false });
-              console.log(error);
-            });
+          dispatch({ type: "SET_LOADING", value: false });
+          navigation.replace("Login")
         }
       } catch (error) {
         dispatch({ type: "SET_LOADING", value: false });

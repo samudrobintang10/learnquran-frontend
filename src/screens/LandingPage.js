@@ -4,7 +4,7 @@ import Gap from "../components/atoms/Gap";
 import Color from "../utilities/Color";
 import Button from "../components/atoms/Button";
 import { auth } from "../config/firebase-config";
-import { deleteItem, getValueFor } from "../config/secureStorage";
+import { deleteItem, getValueFor } from "../utilities/secureStorage";
 
 export default function LandingPage({ navigation }) {
   // const handleSignOut = () => {
