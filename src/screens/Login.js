@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { saveItem } from "../config/secureStorage";
 import { useDispatch } from "react-redux";
+import { connectAuthEmulator } from "firebase/auth";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ export default function Login({ navigation }) {
       })
       .catch((error) => {
         dispatch({ type: "SET_LOADING", value: false });
+        console.log(error)
         alert(error.message);
       });
   };
