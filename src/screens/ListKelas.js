@@ -2,12 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
-import Input from "../components/atoms/Input";
-import Link from "../components/atoms/Link";
 import Kartu from "../components/atoms/Kartu";
 import Color from "../utilities/Color";
 
-export default function ListKelas({ }) {
+export default function ListKelas({ navigation }) {
   return (
     <View style={styles.container}>
       <Gap height={20} />
@@ -19,6 +17,7 @@ export default function ListKelas({ }) {
       <Gap height={20} />
       <ScrollView style={styles.content}>
         <Kartu></Kartu>
+        <Button title={"MASUK"} onPress={() => navigation.navigate('LandingPage')} />
       </ScrollView>
     </View>
   );
@@ -39,22 +38,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#fff"
   },
-  innerText: {
-    color: Color.solidGreen,
-  },
-  descriptionText: {
-    color: Color.lightGray,
-    fontSize: 12,
-  },
-  notRegister: {
-    fontSize: 15,
-    fontWeight: "400",
-    textAlign: "center"
-  },
-  borderLine: {
-    borderBottomColor: Color.lightGray,
-    borderBottomWidth: 0.5
-  },
   firstrow: {
     flex: 0.125,
     backgroundColor: Color.solidGreen,
@@ -62,15 +45,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
-
   },
-  paragraph: {
-    shadowColor: Color.lightGray,
-    borderColor: Color.solidGreen,
-  },
-  card: {
-    alignContent: 'center',
-    margin: 37,
-    elevation: 3
-  }
 });

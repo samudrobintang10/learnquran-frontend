@@ -7,25 +7,25 @@ import { auth } from "../config/firebase-config";
 import { deleteItem, getValueFor } from "../config/secureStorage";
 
 export default function LandingPage({ navigation }) {
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        deleteItem("accessToken");
-        navigation.replace("Login");
-      })
-      .catch((error) => alert(error.message));
-  };
-  const getAccessToken = async () => {
-    const accessToken = await getValueFor("accessToken");
-  };
+  // const handleSignOut = () => {
+  //   auth
+  //     .signOut()
+  //     .then(() => {
+  //       deleteItem("accessToken");
+  //       navigation.replace("Login");
+  //     })
+  //     .catch((error) => alert(error.message));
+  // };
+  // const getAccessToken = async () => {
+  //   const accessToken = await getValueFor("accessToken");
+  // };
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
         <Gap height={40} />
         <Text style={styles.baseText}>
-          Assalamu’alaikum {auth.currentUser.email},
+          {/* Assalamu’alaikum {auth.currentUser.email}, */}
           <Text style={styles.innerText}> Selamat Datang Kembali</Text>
         </Text>
         <Gap height={40} />
@@ -33,12 +33,22 @@ export default function LandingPage({ navigation }) {
           title={"DAFTAR KELAS"}
           onPress={() => navigation.navigate("ListKelas")}
         />
-        <Gap height={40} />
+        <Gap height={10} />
         <Button
+          title={"Detail Pembelajar"}
+          onPress={() => navigation.navigate("DetailPembelajar")}
+        />
+        <Gap height={10} />
+        <Button
+          title={"Detail Kelas Pembelajar"}
+          onPress={() => navigation.navigate("DetailKelasPembelajar")}
+        />
+        <Gap height={40} />
+        {/* <Button
           title={"TEMPORARY LOGOUT"}
           onPress={() => handleSignOut()}
           secondary
-        />
+        /> */}
       </ScrollView>
     </View>
   );
