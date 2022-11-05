@@ -1,14 +1,13 @@
 import axios from "axios";
-import { API_KEY, API_URL } from "@env";
 
 const login = async (email, password) => {
   return axios.post(
-    `${API_URL}/user/login`,
+    `${process.env.API_URL}/user/login`,
     {
       email_address: email,
       password: password,
     },
-    { headers: { apiKey: API_KEY } }
+    { headers: { apiKey: process.env.API_KEY } }
   );
 };
 
@@ -21,7 +20,7 @@ const register = async (
   role
 ) => {
   return axios.post(
-    `${API_URL}/user/register?condition=` + role,
+    `${process.env.API_URL}/user/register?condition=` + role,
     {
       email_address: email,
       password: password,
@@ -29,7 +28,7 @@ const register = async (
       gender: gender,
       phone_number: phoneNumber,
     },
-    { headers: { apiKey: API_KEY } }
+    { headers: { apiKey: process.env.API_KEY } }
   );
 };
 
