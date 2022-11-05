@@ -47,7 +47,10 @@ export default function Router() {
       <Stack.Screen
         name="DetailPembelajar"
         component={DetailPembelajar}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          animation: "slide_from_left",
+        }}
       />
       <Stack.Screen
         name="DetailKelasPembelajar"

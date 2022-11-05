@@ -9,25 +9,25 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 import { saveItem } from "../utilities/secureStorage";
 import { useDispatch } from "react-redux";
-import { connectAuthEmulator } from "firebase/auth";
+import { login } from "../services/auth.service";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     dispatch({ type: "SET_LOADING", value: true });
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        saveItem("accessToken", user.accessToken);
+    login(email, password)
+      .then((response) => {
+        const userToken = response.data.results.data.jwt;
+        saveItem("accessToken", userToken);
         dispatch({ type: "SET_LOADING", value: false });
         navigation.replace("LandingPage");
       })
       .catch((error) => {
         dispatch({ type: "SET_LOADING", value: false });
-        console.log(error)
+        console.log(error);
         alert(error.message);
       });
   };
@@ -35,7 +35,7 @@ export default function Login({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        <Gap height={100} />
+        <Gap height={40} />
         <Text style={styles.baseText}>
           Selamat datang kembali,
           <Text style={styles.innerText}> harap login untuk melanjutkan</Text>
@@ -61,7 +61,10 @@ export default function Login({ navigation }) {
         <Gap height={36} />
         <Button title={"MASUK"} onPress={() => handleSignIn()} />
         <Gap height={12} />
-        <Button title={"MASUK"} onPress={() => navigation.navigate('LandingPage')} />
+        <Button
+          title={"MASUK"}
+          onPress={() => navigation.navigate("LandingPage")}
+        />
         <Gap height={32} />
         <View style={styles.borderLine} />
         <Gap height={36} />

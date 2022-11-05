@@ -54,24 +54,27 @@ export default function Register({ navigation }) {
     if (password !== passwordConfirmation) {
       alert("Konfirmasi password tidak sama dengan password");
     } else {
-      try {
-        const response = await register(
-          email,
-          password,
-          fullName,
-          gender,
-          phoneNumber,
-          role
-        );
-        if (response.status === 200) {
+      register(email, password, fullName, gender, phoneNumber, role)
+        .then(() => {
           alert("Selamat Datang", "Akun anda telah berhasil dibuat");
           dispatch({ type: "SET_LOADING", value: false });
-          navigation.replace("Login")
-        }
-      } catch (error) {
-        dispatch({ type: "SET_LOADING", value: false });
-        console.log(error);
-      }
+          login(email, password)
+            .then((userCredential) => {
+              const userToken = userCredential.result.data.jwt;
+              saveItem("accessToken", userToken);
+              navigation.replace("LandingPage");
+            })
+            .catch((error) => {
+              dispatch({ type: "SET_LOADING", value: false });
+              console.log(error);
+              alert(error.message);
+            });
+        })
+        .catch((error) => {
+          dispatch({ type: "SET_LOADING", value: false });
+          console.log(error);
+          alert(error.message);
+        });
     }
   };
 
