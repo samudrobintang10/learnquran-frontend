@@ -40,9 +40,9 @@ export default function DetailSoal({ navigation }) {
   }
 
   async function stopRecording() {
-    // console.log(recording)
-    // setRecording(undefined);
+    setRecording(undefined);
     await recording.stopAndUnloadAsync();
+
     let updatedRecordings = [...recordings];
     const { sound, status } = await recording.createNewLoadedSoundAsync();
     updatedRecordings.push({
@@ -65,15 +65,18 @@ export default function DetailSoal({ navigation }) {
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => {
       return (
-        <View key={index} style={styles.row}>
-          <Text style={styles.fill}>
-            Recording {index + 1} - {recordingLine.duration}
-          </Text>
-          <Button
-            title={"Play"}
-            onPress={() => recordingLine.sound.replayAsync()}
-          />
-        </View>
+        <>
+          <Gap height={20} />
+          <View key={index} style={styles.row}>
+            <Text style={styles.fill}>
+              Recording {index + 1} - {recordingLine.duration}
+            </Text>
+            <Button
+              title={"Play"}
+              onPress={() => recordingLine.sound.replayAsync()}
+            />
+          </View>
+        </>
       );
     });
   }
@@ -109,10 +112,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: Color.lightGreen,
+    opacity: 0.5,
+    borderRadius: 10,
+    padding: 15
   },
   fill: {
     flex: 1,
-    margin: 16,
   },
   button: {
     margin: 16,
