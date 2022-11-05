@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
   },
   iconBack: {
     position: "absolute",
-    height: 16,
-    width: 10,
-    elevation: 3,
+    height: 32,
+    width: 32,
     zIndex: 3,
+    justifyContent: "center",
+    backgroundColor: Color.solidGreen
   },
 });

@@ -3,10 +3,19 @@ import Color from "../../utilities/Color";
 import { Card } from "react-native-paper";
 import ButtonSmall from "./ButtonSmall";
 import Gap from "./Gap";
+import Button from "./Button";
+import { useState } from "react";
 // import ReactPlayer from 'react-player'
 
 export default function KartuSoal(props) {
   const { judul, header, deskripsi, onPress } = props;
+
+  const [recordAudio, setRecordAudio] = useState(false);
+  const handleRecording = () => {
+    onPress();
+    setRecordAudio(!recordAudio);
+  };
+
   return (
     <Card style={styles.card}>
       <Card.Content>
@@ -17,9 +26,16 @@ export default function KartuSoal(props) {
             <Text style={styles.headerText}>{header}</Text>
             <Text style={styles.secondaryText}>{deskripsi}</Text>
           </View>
-          <Pressable onPress={onPress}>
-            <Image source={require("../../../assets/mic1.png")} />
-          </Pressable>
+          {!recordAudio && (
+            <Button title={"Record"} onPress={() => handleRecording()} />
+          )}
+          {recordAudio && (
+            <Button
+              title={"Stop"}
+              secondary
+              onPress={() => handleRecording()}
+            />
+          )}
         </View>
       </Card.Content>
     </Card>
