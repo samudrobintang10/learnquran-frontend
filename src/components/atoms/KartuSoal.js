@@ -6,6 +6,8 @@ import Gap from "./Gap";
 import Button from "./Button";
 import { useState } from "react";
 // import ReactPlayer from 'react-player'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faMicrophoneAlt, faMicrophoneAltSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function KartuSoal(props) {
   const { judul, header, deskripsi, onPress } = props;
@@ -27,14 +29,28 @@ export default function KartuSoal(props) {
             <Text style={styles.secondaryText}>{deskripsi}</Text>
           </View>
           {!recordAudio && (
-            <Button title={"Record"} onPress={() => handleRecording()} />
+            <Pressable
+              style={styles.startMicrophone}
+              onPress={() => handleRecording()}
+            >
+              <FontAwesomeIcon
+                icon={faMicrophoneAlt}
+                size={24}
+                color={Color.white}
+              />
+            </Pressable>
           )}
           {recordAudio && (
-            <Button
-              title={"Stop"}
-              secondary
-              onPress={() => handleRecording()}
+            <Pressable
+            style={styles.stopMicrophone}
+            onPress={() => handleRecording()}
+          >
+            <FontAwesomeIcon
+              icon={faMicrophoneAltSlash}
+              size={24}
+              color={Color.solidGreen}
             />
+          </Pressable>
           )}
         </View>
       </Card.Content>
@@ -75,5 +91,25 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 14,
     fontWeight: "600",
+  },
+  startMicrophone: {
+    backgroundColor: Color.solidGreen,
+    width: 50,
+    height: 50,
+    marginRight: 8,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  stopMicrophone: {
+    backgroundColor: Color.white,
+    borderColor: Color.solidGreen,
+    borderWidth: 2,
+    width: 50,
+    height: 50,
+    marginRight: 8,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

@@ -1,9 +1,10 @@
 const Color = {
   solidGreen: "#188A5D",
   white: "#fff",
-  lightGray: "#C4C4C4",
+  lightGray: "#828282",
   lightBlue: "#069AC9",
-  lightGreen: "#4DD48B"
+  lightGreen: "#ABF7B1",
+  red: "#CB0B0B"
 };
 
 export default Color;
