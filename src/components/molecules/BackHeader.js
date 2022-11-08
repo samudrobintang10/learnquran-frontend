@@ -4,20 +4,23 @@ import Gap from "../atoms/Gap";
 import Color from "../../utilities/Color";
 import BackIcon from "../../../assets/BackIcon.png";
 
-const BackHeader = ({ onPress }) => {
+export default function BackHeader(props) {
+  const{
+    onPress,
+    judul,
+  } = props;
   return (
     <View style={styles.header}>
       <View style={styles.headerContents}>
         <Pressable onPress={onPress} style={styles.iconBack}>
           <Image source={BackIcon} />
         </Pressable>
-        <Text style={styles.headerText}>Detail Soal 1</Text>
+        <Text style={styles.headerText}>{judul}</Text>
       </View>
     </View>
   );
-};
+}
 
-export default BackHeader;
 
 const styles = StyleSheet.create({
   header: {
@@ -40,9 +43,10 @@ const styles = StyleSheet.create({
   },
   iconBack: {
     position: "absolute",
-    height: 16,
-    width: 10,
-    elevation: 3,
+    height: 32,
+    width: 32,
     zIndex: 3,
+    justifyContent: "center",
+    backgroundColor: Color.solidGreen
   },
 });

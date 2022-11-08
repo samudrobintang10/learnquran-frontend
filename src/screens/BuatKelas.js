@@ -7,36 +7,23 @@ import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
+import UpdateCardHeader from "../components/molecules/ClassCard";
 import BackHeader from "../components/molecules/BackHeader";
 
-export default function DetailPembelajar({ navigation }) {
+export default function BuatKelas({ navigation }) {
   return (
     <View style={styles.container}>
       <BackHeader 
       onPress={() => navigation.goBack()} 
-      judul ={'Kelas Belajar Quran'}>
+      judul ={'Buat Kelas'}>
       </BackHeader>
       <Gap height={20} />
       <ScrollView style={styles.content}>
-        <SimpleCardHeader
-          firstHeader={"Assalamualaikum,"}
-          secondHeader={"Akhi"}
-          nama={"Bintang Samudro"}
-          firstButtonText={"Edit Profile"}
-          secondButtonText={"Logout"}
-          backgroundColor={Color.solidGreen}
-          text={Color.solidGreen}
-        ></SimpleCardHeader>
+        <UpdateCardHeader
+        
+        ></UpdateCardHeader>
         <Gap height={10} />
-        <View>
-          <Text style={styles.baseText2}>Kelas yang diikuti</Text>
-        </View>
-        <Gap height={10} />
-        <KartuDetail
-          judul={"Kelas Mengaji 1"}
-          deskripsi={"Ustadz Rasyid"}
-        ></KartuDetail>
-       
+        
       </ScrollView>
     </View>
   );

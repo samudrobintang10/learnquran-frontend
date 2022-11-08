@@ -7,14 +7,15 @@ import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
+import BackHeader from "../components/molecules/BackHeader";
 
 export default function DetailKelasPembelajar({ navigation }) {
   return (
     <View style={styles.container}>
-      <Gap height={20} />
-      <View style={styles.firstrow}>
-        <Text style={styles.baseText}>Kelas Mengaji 1</Text>
-      </View>
+      <BackHeader 
+      onPress={() => navigation.goBack()} 
+      judul ={'Kelas Mengaji 1'}>
+      </BackHeader>
       <Gap height={20} />
       <ScrollView style={styles.content}>
         <SimpleCardHeader
@@ -32,10 +33,7 @@ export default function DetailKelasPembelajar({ navigation }) {
           deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}
           onPress={() => navigation.navigate("DetailSoal")}
         ></KartuDetail>
-        <Button
-          title={"MASUK"}
-          onPress={() => navigation.navigate("LandingPage")}
-        />
+        
       </ScrollView>
     </View>
   );
