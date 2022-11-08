@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Alert } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
 import KartuProfile from "../components/atoms/KartuProfile";
@@ -12,11 +12,41 @@ import ReactPlayer from "react-player";
 import Kartu from "../components/atoms/Kartu";
 import BackHeader from "../components/molecules/BackHeader";
 import { Audio } from "expo-av";
+import RecordingCard from "../components/molecules/RecordingCard";
 
 export default function DetailSoal({ navigation }) {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
+
+  const triggerSubmitRecorder = async (item) => {
+    const uri = item.file;
+    console.log("Uploading " + uri);
+    let apiUrl = "http://YOUR_SERVER_HERE/upload";
+    let uriParts = uri.split(".");
+    let fileType = uriParts[uriParts.length - 1];
+
+    let formData = new FormData();
+    formData.append("file", {
+      uri,
+      name: `recording.${fileType}`,
+      type: `audio/x-${fileType}`,
+    });
+    item.submitted = true
+    setRecordings([item]);
+
+    // await axios.post(
+    //   `${process.env.API_URL}/submission/upload/1`,
+    //   formData,
+    //   { headers: { apiKey: process.env.API_KEY } }
+    // );
+
+    console.log(formData);
+  };
+
+  const triggerDeleteSubmitRecorder = async (item) => {
+    setRecordings([]);
+  };
 
   async function startRecording() {
     try {
@@ -49,6 +79,7 @@ export default function DetailSoal({ navigation }) {
       sound: sound,
       duration: getDurationFormatted(status.durationMillis),
       file: recording.getURI(),
+      submitted: false
     });
 
     setRecordings(updatedRecordings);
@@ -65,18 +96,13 @@ export default function DetailSoal({ navigation }) {
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => {
       return (
-        <>
-          <Gap height={20} />
-          <View key={index} style={styles.row}>
-            <Text style={styles.fill}>
-              Recording {index + 1} - {recordingLine.duration}
-            </Text>
-            <Button
-              title={"Play"}
-              onPress={() => recordingLine.sound.replayAsync()}
-            />
-          </View>
-        </>
+        <RecordingCard
+          recordingLine={recordingLine}
+          index={index}
+          triggerSubmitRecorder={triggerSubmitRecorder}
+          triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
+          submittedStatus={recordingLine.submitted}
+        />
       );
     });
   }
@@ -85,15 +111,15 @@ export default function DetailSoal({ navigation }) {
     <View style={styles.container}>
       <BackHeader onPress={() => navigation.goBack()} />
       <Gap height={20} />
-      <ScrollView style={styles.content}>
+      <View style={styles.content}>
         <KartuSoal
           judul={"Soal 1"}
           header={"Al-Fatihah"}
           deskripsi={"Ayat 1-5"}
           onPress={recording ? stopRecording : startRecording}
         />
-        {getRecordingLines()}
-      </ScrollView>
+      </View>
+      <ScrollView style={styles.content}>{getRecordingLines()}</ScrollView>
     </View>
   );
 }
@@ -109,13 +135,15 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
   row: {
-    flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
     backgroundColor: Color.lightGreen,
-    opacity: 0.5,
     borderRadius: 10,
-    padding: 15
+    padding: 15,
+  },
+  player: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   fill: {
     flex: 1,

@@ -2,22 +2,32 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 
 export default function Button(props) {
-  const { onPress, title, secondary } = props;
+  const { onPress, title, secondary, tertiary, fouthdary } = props;
   let bgColor = Color.solidGreen;
   let textColor = Color.white;
+  let borderColor = Color.solidGreen;
   if (secondary) {
     bgColor = Color.white;
     textColor = Color.solidGreen;
   }
+  if (tertiary) {
+    bgColor = Color.lightGray;
+    textColor = Color.white;
+    borderColor = Color.lightGray
+  }
+  if (fouthdary) {
+    bgColor = Color.red,
+    borderColor = Color.red
+  }
   return (
-    <Pressable style={styles.button(bgColor)} onPress={onPress}>
+    <Pressable style={styles.button(bgColor, borderColor)} onPress={onPress}>
       <Text style={styles.text(textColor)}>{title}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: (bgColor) => ({
+  button: (bgColor, borderColor) => ({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
@@ -26,7 +36,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: bgColor,
     borderWidth: 2,
-    borderColor: Color.solidGreen,
+    borderColor: borderColor,
+    zIndex: 3,
   }),
   text: (textColor) => ({
     fontSize: 16,
