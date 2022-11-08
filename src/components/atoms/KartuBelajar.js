@@ -1,12 +1,18 @@
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 import QuranLogo from "../../../assets/quran-2.png";
 
-export default function KartuBelajar({}) {
+export default function KartuBelajar(props) {
+  const{
+    onPress,
+    kelas,
+  } = props;
   return (
     <View style={styles.kartuBelajar}>
-      <Image source={QuranLogo} />
-      <Text style={styles.textTitleClass}>Kelas Mengaji 1</Text>
+      <Pressable onPress={onPress} >
+        <Image source={QuranLogo} />
+      <Text style={styles.textTitleClass}>{kelas}</Text>
+      </Pressable>
     </View>
   );
 }

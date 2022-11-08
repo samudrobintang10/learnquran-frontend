@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 
 export default function ButtonSmall(props) {
-  const { onPress, title, secondary, danger, teritary } = props;
+  const { onPress, title, secondary, danger, teritary,TheGreens } = props;
   let bgColor = Color.lightBlue;
   let textColor = Color.white;
   let border = Color.lightBlue;
@@ -20,6 +20,11 @@ export default function ButtonSmall(props) {
     bgColor = 'grey';
     textColor = Color.white;
     border = 'grey';
+  }
+  if (TheGreens) {
+    bgColor = Color.solidGreen;
+    textColor = Color.white;
+    border = Color.solidGreen;
   }
   return (
     <Pressable style={styles.button(bgColor,border)} onPress={onPress}>

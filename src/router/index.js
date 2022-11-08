@@ -7,6 +7,10 @@ import LandingPage from "../screens/LandingPage";
 import DetailPembelajar from "../screens/DetailPembelajar";
 import DetailKelasPembelajar from "../screens/DetailKelasPembelajar";
 import DetailSoal from "../screens/DetailSoal";
+import UbahPembelajar from "../screens/UbahPembelajar";
+import ListKelasPengajar from "../screens/ListKelasPengajar";
+import BuatKelas from "../screens/BuatKelas";
+import DetailKelasPengajar from "../screens/DetailKelasPengajar";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +64,26 @@ export default function Router() {
       <Stack.Screen
         name="DetailSoal"
         component={DetailSoal}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UbahPembelajar"
+        component={UbahPembelajar}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="ListKelasPengajar"
+        component={ListKelasPengajar}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="BuatKelas"
+        component={BuatKelas}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DetailKelasPengajar"
+        component={DetailKelasPengajar}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

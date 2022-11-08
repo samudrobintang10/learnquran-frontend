@@ -37,7 +37,9 @@
     "react-native-web": "~0.18.7",
     "react-player": "^2.11.0",
     "react-redux": "^8.0.4",
-    "redux": "^4.2.0"
+    "redux": "^4.2.0",
+    "react-native-animated-spinkit": "^1.4.1",
+    "@freakycoder/react-native-bounceable": ">= 0.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

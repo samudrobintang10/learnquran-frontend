@@ -36,7 +36,7 @@ export default function LandingPage({ navigation }) {
         <Text style={styles.baseText}>Mulai Belajar </Text>
         <Gap height={14} />
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <KartuBelajar />
+          <KartuBelajar onPress={() => navigation.navigate("DetailKelasPembelajar")} kelas={'Test Kelas'}/>
           <Gap width={20} />
           <KartuBelajar />
           <Gap width={20} />
@@ -49,13 +49,13 @@ export default function LandingPage({ navigation }) {
         />
         <Gap height={10} />
         <Button
-          title={"Detail Pembelajar"}
-          onPress={() => navigation.navigate("DetailPembelajar")}
+          title={"Ubah Pembelajar"}
+          onPress={() => navigation.navigate("UbahPembelajar")}
         />
         <Gap height={10} />
         <Button
-          title={"Detail Kelas Pembelajar"}
-          onPress={() => navigation.navigate("DetailKelasPembelajar")}
+          title={"Kelas Diajar"}
+          onPress={() => navigation.navigate("ListKelasPengajar")}
         />
         <Gap height={40} />
         <Button

@@ -5,38 +5,41 @@ import Gap from "../components/atoms/Gap";
 import KartuProfile from "../components/atoms/KartuProfile";
 import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
-import ButtonRed from "../components/atoms/ButtonSmall";
+import ButtonSmall from "../components/atoms/ButtonSmall";
+import ButtonOuter from "../components/atoms/ButtonOuter";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
+import UpdateCardHeader from "../components/molecules/ClassCard";
 import BackHeader from "../components/molecules/BackHeader";
 
-export default function DetailPembelajar({ navigation }) {
+export default function BuatKelas({ navigation }) {
   return (
     <View style={styles.container}>
       <BackHeader 
       onPress={() => navigation.goBack()} 
-      judul ={'Kelas Belajar Quran'}>
+      judul ={'Buat Kelas'}>
       </BackHeader>
       <Gap height={20} />
       <ScrollView style={styles.content}>
-        <SimpleCardHeader
-          firstHeader={"Assalamualaikum,"}
-          secondHeader={"Akhi"}
-          nama={"Bintang Samudro"}
-          firstButtonText={"Edit Profile"}
-          secondButtonText={"Logout"}
-          backgroundColor={Color.solidGreen}
-          text={Color.solidGreen}
-        ></SimpleCardHeader>
-        <Gap height={10} />
-        <View>
-          <Text style={styles.baseText2}>Kelas yang diikuti</Text>
+      <View style={styles.row}>
+          
+          <ButtonOuter title={'Edit Kelas'} backgroundColor={Color.solidGreen}
+          text={Color.solidGreen}></ButtonOuter>
+          <Gap width={20} />
+          <ButtonSmall style={styles.buttonKecil} title={'Hapus Kelas'} danger></ButtonSmall>
         </View>
-        <Gap height={10} />
+        <Gap height={20}></Gap>
+        <Text>Daftar Soal</Text>
+        <Gap height={20}></Gap>
         <KartuDetail
-          judul={"Kelas Mengaji 1"}
-          deskripsi={"Ustadz Rasyid"}
-        ></KartuDetail>
-       
+         judul={"Soal 1"}
+         deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}></KartuDetail>
+        <Gap height={20}></Gap>
+        <Text>Daftar Pembelajar</Text>
+        <Gap height={20}></Gap>
+        <KartuDetail
+        judul={"Bintang Samudro"}
+    
+        onPress={() => navigation.navigate("DetailPembelajar")}></KartuDetail>
       </ScrollView>
     </View>
   );
@@ -47,6 +50,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   content: {
     paddingLeft: 16,

@@ -6,20 +6,23 @@ import BackIcon from "../../../assets/BackIcon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-const BackHeader = ({ onPress }) => {
+export default function BackHeader(props) {
+  const{
+    onPress,
+    judul,
+  } = props;
   return (
     <View style={styles.header}>
       <View style={styles.headerContents}>
         <Pressable onPress={onPress} style={styles.iconBack}>
           <FontAwesomeIcon icon={faChevronLeft} size={20} color={Color.white} />
         </Pressable>
-        <Text style={styles.headerText}>Detail Soal 1</Text>
+        <Text style={styles.headerText}>{judul}</Text>
       </View>
     </View>
   );
-};
+}
 
-export default BackHeader;
 
 const styles = StyleSheet.create({
   header: {
