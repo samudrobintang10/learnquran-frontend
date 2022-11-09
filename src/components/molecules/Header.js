@@ -4,12 +4,12 @@ import Gap from "../atoms/Gap";
 import Color from "../../utilities/Color";
 import AccountLogo from "../../../assets/account_circle.png";
 
-const Header = ({ onPress }) => {
+const Header = ({ onPress, accountName }) => {
   return (
     <View style={styles.header}>
       <Text style={styles.headerText}>BelajarQuran</Text>
       <Pressable style={styles.account} onPress={onPress}>
-        <Text style={styles.accountText}>Hi, Bintang!</Text>
+        <Text style={styles.accountText}>Hi, {accountName}!</Text>
         <Gap width={5} />
         <Image source={AccountLogo} />
       </Pressable>

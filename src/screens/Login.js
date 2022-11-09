@@ -5,11 +5,11 @@ import Gap from "../components/atoms/Gap";
 import Input from "../components/atoms/Input";
 import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase-config";
 import { saveItem } from "../utilities/secureStorage";
 import { useDispatch } from "react-redux";
 import { login } from "../services/auth.service";
+import UserAPI from "../services/UserAPI";
+import { Alert } from "react-native";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -19,16 +19,24 @@ export default function Login({ navigation }) {
   const handleSignIn = async () => {
     dispatch({ type: "SET_LOADING", value: true });
     login(email, password)
-      .then((response) => {
-        const userToken = response.data.results.data.jwt;
+      .then(async (userCredential) => {
+        const userToken = userCredential.data.results.data.jwt;
         saveItem("accessToken", userToken);
-        dispatch({ type: "SET_LOADING", value: false });
-        navigation.replace("LandingPage");
+        try {
+          const { data: response } = await UserAPI.getUserDetail();
+          saveItem("userData", response?.results?.data);
+          navigation.replace("LandingPage");
+          dispatch({ type: "SET_LOADING", value: false });
+        } catch (error) {
+          dispatch({ type: "SET_LOADING", value: false });
+          console.log(error);
+          Alert.alert(error.message);
+        }
       })
       .catch((error) => {
         dispatch({ type: "SET_LOADING", value: false });
         console.log(error);
-        alert(error.message);
+        Alert.alert(error.message);
       });
   };
 
@@ -62,7 +70,7 @@ export default function Login({ navigation }) {
         <Button title={"MASUK"} onPress={() => handleSignIn()} />
         <Gap height={12} />
         <Button
-          title={"MASUK"}
+          title={"MASUK (DEBUG)"}
           onPress={() => navigation.navigate("LandingPage")}
         />
         <Gap height={32} />

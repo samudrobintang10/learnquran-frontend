@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 
 export default function Button(props) {
-  const { onPress, title, secondary, tertiary, fouthdary } = props;
+  const { onPress, title, secondary, tertiary, fouthdary, fivedary } = props;
   let bgColor = Color.solidGreen;
   let textColor = Color.white;
   let borderColor = Color.solidGreen;
@@ -18,6 +18,10 @@ export default function Button(props) {
   if (fouthdary) {
     bgColor = Color.red,
     borderColor = Color.red
+  }
+  if (fivedary) {
+    bgColor = Color.lightBlue,
+    borderColor = Color.lightBlue
   }
   return (
     <Pressable style={styles.button(bgColor, borderColor)} onPress={onPress}>

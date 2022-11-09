@@ -7,36 +7,42 @@ import { auth } from "../config/firebase-config";
 import { deleteItem, getValueFor } from "../utilities/secureStorage";
 import Header from "../components/molecules/Header";
 import KartuBelajar from "../components/atoms/KartuBelajar";
+import UserAPI from "../services/UserAPI";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function LandingPage({ navigation }) {
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        deleteItem("accessToken");
-        navigation.replace("Login");
-      })
-      .catch((error) => alert(error.message));
+  const [userData, setUserData] = useState({});
+  const getUserData = async () => {
+    const userDataStorage = await getValueFor("userData");
+    setUserData(userDataStorage);
   };
-  const getAccessToken = async () => {
-    const accessToken = await getValueFor("accessToken");
-    console.log(accessToken);
-  };
+
+  useEffect(() => {
+    setUserData({});
+    getUserData();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Header onPress={() => navigation.navigate("DetailPembelajar")} />
+      <Header
+        onPress={() => navigation.navigate("DetailPembelajar")}
+        accountName={userData?.name?.split(" ")[0]}
+      />
       <ScrollView style={styles.content}>
         <Gap height={20} />
         <Text style={styles.baseText}>
-          Assalamu’alaikum Bintang,
+          Assalamu’alaikum {userData?.name?.split(" ")[0]},
           <Text style={styles.innerText}> Selamat Datang Kembali</Text>
         </Text>
         <Gap height={20} />
         <Text style={styles.baseText}>Mulai Belajar </Text>
         <Gap height={14} />
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <KartuBelajar onPress={() => navigation.navigate("DetailKelasPembelajar")} kelas={'Test Kelas'}/>
+          <KartuBelajar
+            onPress={() => navigation.navigate("DetailKelasPembelajar")}
+            kelas={"Test Kelas"}
+          />
           <Gap width={20} />
           <KartuBelajar />
           <Gap width={20} />
@@ -58,16 +64,6 @@ export default function LandingPage({ navigation }) {
           onPress={() => navigation.navigate("ListKelasPengajar")}
         />
         <Gap height={40} />
-        <Button
-          title={"CHECK TOKEN"}
-          onPress={() => getAccessToken()}
-          secondary
-        />
-        <Button
-          title={"TEMPORARY LOGOUT"}
-          onPress={() => handleSignOut()}
-          secondary
-        />
       </ScrollView>
     </View>
   );

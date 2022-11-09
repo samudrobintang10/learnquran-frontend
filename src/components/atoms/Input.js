@@ -27,6 +27,8 @@ const Input = ({
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
         keyboardType={keyboardType ? keyboardType : 'default'}
+        value={value}
+        editable={disable ? false : true}
       />
     </View>
   );

@@ -5,18 +5,25 @@ import Button from "../atoms/Button";
 import { useState } from "react";
 import { Audio } from "expo-av";
 import { Alert } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faTrash,
+  faRotate,
+  faTrashAlt,
+  faPaperPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function RecordingCard({
   recordingLine,
   index,
   triggerSubmitRecorder,
   triggerDeleteSubmitRecorder,
-  submittedStatus
+  submittedStatus,
 }) {
   const [recorderPlaying, setRecorderPlaying] = useState(false);
   const [recordingLineTemp, setRecordingLineTemp] = useState(recordingLine);
   const [submittedRecord, setSubmittedRecord] = useState(submittedStatus);
-  console.log(submittedRecord, submittedStatus)
+
   const handlePlayingRecord = async (recorderItem) => {
     const record = await recordingLineTemp.sound.replayAsync();
   };
@@ -25,7 +32,6 @@ export default function RecordingCard({
     Alert.alert("Submit Recording", "Yakin anda ingin mensubmit rekaman ini?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
       {
@@ -42,7 +48,6 @@ export default function RecordingCard({
     Alert.alert("Submit Recording", "Yakin anda ingin menghapus rekaman ini?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
       {
@@ -66,22 +71,36 @@ export default function RecordingCard({
         <View style={styles.player}>
           {!recorderPlaying && (
             <Button
-              title={"Replay"}
+              title={
+                <FontAwesomeIcon
+                  icon={faRotate}
+                  size={24}
+                  color={Color.white}
+                />
+              }
               onPress={() => handlePlayingRecord(recordingLineTemp)}
             />
           )}
           <Gap width={20} />
           {!submittedStatus && (
             <Button
-              tertiary
-              title={"Submit"}
+              fivedary
+              title={
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  size={24}
+                  color={Color.white}
+                />
+              }
               onPress={() => handleSubmitRecorder(recordingLineTemp)}
             />
           )}
           {submittedStatus && (
             <Button
               fouthdary
-              title={"Hapus"}
+              title={
+                <FontAwesomeIcon icon={faTrash} size={24} color={Color.white} />
+              }
               onPress={() => handleCancelSubmitRecorder(recordingLineTemp)}
             />
           )}

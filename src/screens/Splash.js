@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import AuthHeader from "../services/auth.header";
 import Color from "../utilities/Color";
-import { auth } from "../config/firebase-config";
+import { getValueFor } from "../utilities/secureStorage";
 
 export default function Splash({ navigation }) {
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setTimeout(() => {
-        if (user) {
+    async function isLogged() {
+      setTimeout(async () => {
+        const isLogged = await getValueFor("accessToken");
+        if (isLogged) {
           navigation.replace("LandingPage");
         } else {
           navigation.replace("Login");
         }
       }, 3000);
-    });
-    return () => unsubscribe();
+    }
+    isLogged();
   }, [navigation]);
 
   return (

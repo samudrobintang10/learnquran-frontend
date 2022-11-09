@@ -14,6 +14,7 @@ import BackHeader from "../components/molecules/BackHeader";
 import { Audio } from "expo-av";
 import RecordingCard from "../components/molecules/RecordingCard";
 
+
 export default function DetailSoal({ navigation }) {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
@@ -109,7 +110,7 @@ export default function DetailSoal({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <BackHeader onPress={() => navigation.goBack()} />
+      <BackHeader onPress={() => navigation.goBack()} judul={"Detail Soal 1"} />
       <Gap height={20} />
       <View style={styles.content}>
         <KartuSoal

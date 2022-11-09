@@ -6,16 +6,11 @@ import Input from "../components/atoms/Input";
 import Link from "../components/atoms/Link";
 import Color from "../utilities/Color";
 import InputSelect from "../components/atoms/InputSelect";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "../config/firebase-config";
-import axios from "axios";
-import { API_KEY, API_URL } from "@env";
 import { saveItem } from "../utilities/secureStorage";
 import { useDispatch } from "react-redux";
 import { login, register } from "../services/auth.service";
+import UserAPI from "../services/UserAPI";
+import { Alert } from "react-native";
 
 const genderOptions = [
   {
@@ -52,28 +47,37 @@ export default function Register({ navigation }) {
   const handleSignUp = async () => {
     dispatch({ type: "SET_LOADING", value: true });
     if (password !== passwordConfirmation) {
-      alert("Konfirmasi password tidak sama dengan password");
+      Alert.alert("Konfirmasi password tidak sama dengan password");
     } else {
       register(email, password, fullName, gender, phoneNumber, role)
         .then(() => {
-          alert("Selamat Datang", "Akun anda telah berhasil dibuat");
+          Alert.alert("Selamat Datang", "Akun anda telah berhasil dibuat");
           dispatch({ type: "SET_LOADING", value: false });
           login(email, password)
-            .then((userCredential) => {
-              const userToken = userCredential.result.data.jwt;
+            .then(async (userCredential) => {
+              const userToken = userCredential.data.results.data.jwt;
               saveItem("accessToken", userToken);
-              navigation.replace("LandingPage");
+              try {
+                const { data: response } = await UserAPI.getUserDetail();
+                saveItem("userData", response?.results?.data);
+                navigation.replace("LandingPage");
+                dispatch({ type: "SET_LOADING", value: false });
+              } catch (error) {
+                dispatch({ type: "SET_LOADING", value: false });
+                console.log(error);
+                Alert.alert(error.message);
+              }
             })
             .catch((error) => {
               dispatch({ type: "SET_LOADING", value: false });
               console.log(error);
-              alert(error.message);
+              Alert.alert(error.message);
             });
         })
         .catch((error) => {
           dispatch({ type: "SET_LOADING", value: false });
           console.log(error);
-          alert(error.message);
+          Alert.alert(error.message);
         });
     }
   };

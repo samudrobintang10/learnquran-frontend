@@ -8,35 +8,50 @@ import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
 import BackHeader from "../components/molecules/BackHeader";
+import { auth } from "../config/firebase-config";
+import { deleteItem } from "../utilities/secureStorage";
+import { getValueFor } from "../utilities/secureStorage";
+import { useState, useEffect } from "react";
 
 export default function DetailPembelajar({ navigation }) {
+  const [userData, setUserData] = useState({});
+  const getUserData = async () => {
+    const userDataStorage = await getValueFor("userData");
+    setUserData(userDataStorage);
+  };
+
+  useEffect(() => {
+    setUserData({});
+    getUserData();
+  }, []);
+
+  const handleSignOut = () => {
+    deleteItem("accessToken");
+    deleteItem("userData");
+    navigation.replace("Login");
+  };
   return (
     <View style={styles.container}>
-      <BackHeader 
-      onPress={() => navigation.goBack()} 
-      judul ={'Kelas Belajar Quran'}>
-      </BackHeader>
+      <BackHeader onPress={() => navigation.goBack()} judul={"Akun Kamu"} />
       <Gap height={20} />
       <ScrollView style={styles.content}>
         <SimpleCardHeader
           firstHeader={"Assalamualaikum,"}
-          secondHeader={"Akhi"}
-          nama={"Bintang Samudro"}
+          secondHeader={userData?.gender === 0 ? "Akhi" : "Ukhti"}
+          nama={userData?.name}
           firstButtonText={"Edit Profile"}
           secondButtonText={"Logout"}
           backgroundColor={Color.solidGreen}
           text={Color.solidGreen}
-        ></SimpleCardHeader>
+          handleUbahPembelajar={() => navigation.navigate("UbahPembelajar")}
+          handleLogout={() => handleSignOut()}
+        />
         <Gap height={10} />
         <View>
           <Text style={styles.baseText2}>Kelas yang diikuti</Text>
         </View>
         <Gap height={10} />
-        <KartuDetail
-          judul={"Kelas Mengaji 1"}
-          deskripsi={"Ustadz Rasyid"}
-        ></KartuDetail>
-       
+        <KartuDetail judul={"Kelas Mengaji 1"} deskripsi={"Ustadz Rasyid"} />
       </ScrollView>
     </View>
   );
