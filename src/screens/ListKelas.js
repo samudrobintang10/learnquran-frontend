@@ -5,16 +5,43 @@ import Gap from "../components/atoms/Gap";
 import Kartu from "../components/atoms/Kartu";
 import BackHeader from "../components/molecules/BackHeader";
 import Color from "../utilities/Color";
+import ClassAPI from "../services/ClassAPI";
+import { useState, useEffect } from "react";
 
 export default function ListKelas({ navigation }) {
+  const [allClass, setAllClass] = useState([]);
+  const getAllClass = async () => {
+    try {
+      const { data: response } = await ClassAPI.getAllClass();
+      console.log(response?.results?.data);
+      setAllClass(response?.results?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setAllClass([]);
+    getAllClass();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <BackHeader onPress={() => navigation.goBack()} judul ={'Kelas Belajar Quran'}></BackHeader>
-      
+      <BackHeader onPress={() => navigation.goBack()} judul={"Cari Kelas"} />
+
       <Gap height={20} />
       <ScrollView style={styles.content}>
-        <Kartu></Kartu>
-        
+        {allClass.map((item) => {
+          return (
+            <Kartu
+              key={item.id}
+              title={item.name}
+              teacher_name={item.teacher_name}
+              total_student={item.total_student}
+              capacity={item.capacity}
+            />
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -33,7 +60,7 @@ const styles = StyleSheet.create({
   baseText: {
     fontSize: 24,
     fontWeight: "600",
-    color: "#fff"
+    color: "#fff",
   },
   firstrow: {
     flex: 0.125,
