@@ -7,6 +7,12 @@ class ClassAPI {
       headers: await AuthHeader(),
     });
   }
+
+  async getAllClass() {
+    return axios.get(`${process.env.API_URL}/class`, {
+      headers: await AuthHeader(),
+    });
+  }
 }
 
 export default new ClassAPI();
