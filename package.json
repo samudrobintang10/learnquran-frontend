@@ -33,7 +33,7 @@
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
     "react-native-select-dropdown": "^3.0.1",
-    "react-native-svg": "git+https://github.com/expo/react-native-svg.git",
+    "react-native-svg": "12.3.0",
     "react-native-web": "~0.18.7",
     "react-player": "^2.11.0",
     "react-redux": "^8.0.4",
