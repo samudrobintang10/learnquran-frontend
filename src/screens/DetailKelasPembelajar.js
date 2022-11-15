@@ -6,34 +6,107 @@ import KartuProfile from "../components/atoms/KartuProfile";
 import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
-import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
 import BackHeader from "../components/molecules/BackHeader";
+import ClassAPI from "../services/ClassAPI";
+import { useState, useEffect } from "react";
+import CardDetailKelas from "../components/molecules/CardDetailKelas";
+import StudentAPI from "../services/StudentAPI";
+import { Alert } from "react-native";
+import { useDispatch } from "react-redux";
 
-export default function DetailKelasPembelajar({ navigation }) {
+export default function DetailKelasPembelajar({ navigation, route }) {
+  const { idClass } = route.params;
+  
+  const dispatch = useDispatch();
+
+  const [detailClass, setDetailClass] = useState({});
+  const getClass = async (id) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    try {
+      const { data: response } = await ClassAPI.getClassById(id);
+      setDetailClass(response?.results?.data);
+      dispatch({ type: "SET_LOADING", value: false });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "SET_LOADING", value: false });
+    }
+  };
+
+  const handleEnrollKelas = async (id) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    StudentAPI.enrollClass(id)
+      .then((response) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert(
+          "Berhasil Enroll",
+          "Anda berhasil melakukan enroll ke kelas!",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.navigate("LandingPage");
+              },
+            },
+          ]
+        );
+      })
+      .catch((error) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert(error.message);
+      });
+  };
+
+  const handleUnenrollKelas = async (id) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    StudentAPI.unenrollClass(id)
+      .then((response) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert(
+          "Kelas Telah di Unenroll",
+          "Anda berhasil keluar dari kelas!",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.navigate("LandingPage");
+              },
+            },
+          ]
+        );
+      })
+      .catch((error) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert(error.message);
+      });
+  };
+
+  useEffect(() => {
+    setDetailClass({});
+    getClass(idClass);
+  }, [idClass]);
+
   return (
     <View style={styles.container}>
-      <BackHeader 
-      onPress={() => navigation.goBack()} 
-      judul ={'Kelas Mengaji 1'}>
-      </BackHeader>
+      <BackHeader
+        onPress={() => navigation.goBack()}
+        judul={detailClass?.name}
+      />
       <Gap height={20} />
       <ScrollView style={styles.content}>
-        <SimpleCardHeader
-          firstHeader={"Assalamualaikum,"}
-          secondHeader={"Akhi"}
-          nama={"Bintang Samudro"}
-          firstButtonText={"Kelas Diikuti"}
-          secondButtonText={"Keluar Kelas"}
+        <CardDetailKelas
+          nama={detailClass?.teacher_name}
+          handleEnrollKelas={() => handleEnrollKelas(detailClass?.id)}
+          handleUnenrollKelas={() => handleUnenrollKelas(detailClass?.id)}
+          enrolled={detailClass?.is_enrolled}
           backgroundColor={Color.lightBlue}
           text={Color.lightBlue}
-        ></SimpleCardHeader>
+        />
         <Gap height={10} />
         <KartuDetail
           judul={"Tugas 1"}
           deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}
           onPress={() => navigation.navigate("DetailSoal")}
-        ></KartuDetail>
-        
+        />
       </ScrollView>
     </View>
   );

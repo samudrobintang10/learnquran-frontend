@@ -12,6 +12,7 @@ import { auth } from "../config/firebase-config";
 import { deleteItem } from "../utilities/secureStorage";
 import { getValueFor } from "../utilities/secureStorage";
 import { useState, useEffect } from "react";
+import ClassAPI from "../services/ClassAPI";
 
 export default function DetailPembelajar({ navigation }) {
   const [userData, setUserData] = useState({});
@@ -20,9 +21,22 @@ export default function DetailPembelajar({ navigation }) {
     setUserData(userDataStorage);
   };
 
+  const [allClassByStudent, setAllClassByStudent] = useState([]);
+  const getAllClassByStudent = async () => {
+    console.log("TE<AM");
+    try {
+      const { data: response } = await ClassAPI.getAllClassByStudent();
+      setAllClassByStudent(response?.results?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     setUserData({});
     getUserData();
+    setAllClassByStudent([]);
+    getAllClassByStudent();
   }, []);
 
   const handleSignOut = () => {
@@ -51,7 +65,22 @@ export default function DetailPembelajar({ navigation }) {
           <Text style={styles.baseText2}>Kelas yang diikuti</Text>
         </View>
         <Gap height={10} />
-        <KartuDetail judul={"Kelas Mengaji 1"} deskripsi={"Ustadz Rasyid"} />
+        {allClassByStudent.map((item) => {
+          return (
+            <>
+              <KartuDetail
+                judul={item?.name}
+                deskripsi={item?.teacher_name}
+                onPress={() =>
+                  navigation.navigate("DetailKelasPembelajar", {
+                    idClass: item.id,
+                  })
+                }
+              />
+              <Gap height={10} />
+            </>
+          );
+        })}
       </ScrollView>
     </View>
   );

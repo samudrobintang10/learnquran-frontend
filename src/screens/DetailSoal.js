@@ -22,8 +22,6 @@ export default function DetailSoal({ navigation }) {
 
   const triggerSubmitRecorder = async (item) => {
     const uri = item.file;
-    console.log("Uploading " + uri);
-    let apiUrl = "http://YOUR_SERVER_HERE/upload";
     let uriParts = uri.split(".");
     let fileType = uriParts[uriParts.length - 1];
 
@@ -37,7 +35,7 @@ export default function DetailSoal({ navigation }) {
     setRecordings([item]);
 
     // await axios.post(
-    //   `${process.env.API_URL}/submission/upload/1`,
+    //   `${process.env.API_URL}/submission/upload/` + id,
     //   formData,
     //   { headers: { apiKey: process.env.API_KEY } }
     // );

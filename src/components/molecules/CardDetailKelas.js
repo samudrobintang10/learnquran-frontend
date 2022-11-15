@@ -5,44 +5,44 @@ import ButtonSmall from "../atoms/ButtonSmall";
 import ButtonOuter from "../atoms/ButtonOuter";
 import Gap from "../atoms/Gap";
 
-export default function SimpleCardHeader(props) {
+export default function CardDetailKelas(props) {
   const {
-    firstHeader,
-    secondHeader,
     nama,
-    firstButtonText,
-    secondButtonText,
     backgroundColor,
     text,
-    handleLogout,
-    handleUbahPembelajar,
+    enrolled,
+    handleEnrollKelas,
+    handleUnenrollKelas,
   } = props;
   return (
     <Card style={styles.card}>
       <Card.Content>
         <View>
           <View>
-            {firstHeader && (
-              <Text style={styles.baseText}>
-                {firstHeader}
-                <Text style={styles.innerText}>{secondHeader}</Text>
-              </Text>
-            )}
             <Text style={styles.outerText}>{nama}</Text>
             <Gap height={30}></Gap>
             <View style={styles.row}>
-              <ButtonOuter
-                title={firstButtonText}
-                backgroundColor={backgroundColor}
-                text={text}
-                onPress={handleUbahPembelajar}
-              ></ButtonOuter>
-              <Gap width={10}></Gap>
-              <ButtonSmall
-                title={secondButtonText}
-                danger
-                onPress={handleLogout}
-              />
+              {!enrolled && (
+                <ButtonSmall
+                  title={"Daftar Kelas"}
+                  onPress={handleEnrollKelas}
+                />
+              )}
+              {enrolled && (
+                <>
+                  <ButtonOuter
+                    title={"Kelas diikuti"}
+                    backgroundColor={backgroundColor}
+                    text={text}
+                  />
+                  <Gap width={10} />
+                  <ButtonSmall
+                    title={"Keluar Kelas"}
+                    danger
+                    onPress={handleUnenrollKelas}
+                  />
+                </>
+              )}
             </View>
           </View>
         </View>
