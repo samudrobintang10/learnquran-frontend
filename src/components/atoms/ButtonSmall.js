@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 
 export default function ButtonSmall(props) {
-  const { onPress, title, secondary, danger, teritary,TheGreens } = props;
+  const { onPress, title, secondary, danger, teritary, TheGreens } = props;
   let bgColor = Color.lightBlue;
   let textColor = Color.white;
   let border = Color.lightBlue;

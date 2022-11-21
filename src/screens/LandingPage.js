@@ -10,6 +10,7 @@ import KartuBelajar from "../components/atoms/KartuBelajar";
 import UserAPI from "../services/UserAPI";
 import { useEffect } from "react";
 import { useState } from "react";
+import ClassAPI from "../services/ClassAPI";
 
 export default function LandingPage({ navigation }) {
   const [userData, setUserData] = useState({});
@@ -18,10 +19,26 @@ export default function LandingPage({ navigation }) {
     setUserData(userDataStorage);
   };
 
+  const [allClassByStudent, setAllClassByStudent] = useState([]);
+  const getAllClassByStudent = async () => {
+    try {
+      const { data: response } = await ClassAPI.getAllClassByStudent();
+      setAllClassByStudent(response?.results?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setUserData({});
-    getUserData();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      setAllClassByStudent([]);
+      getAllClassByStudent();
+      setUserData({});
+      getUserData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -36,17 +53,24 @@ export default function LandingPage({ navigation }) {
           <Text style={styles.innerText}> Selamat Datang Kembali</Text>
         </Text>
         <Gap height={20} />
-        <Text style={styles.baseText}>Mulai Belajar </Text>
+        <Text style={styles.baseText}>Mulai Belajar</Text>
         <Gap height={14} />
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <KartuBelajar
-            onPress={() => navigation.navigate("DetailKelasPembelajar")}
-            kelas={"Test Kelas"}
-          />
-          <Gap width={20} />
-          <KartuBelajar />
-          <Gap width={20} />
-          <KartuBelajar />
+          {allClassByStudent.map((item) => {
+            return (
+              <>
+                <KartuBelajar
+                  onPress={() =>
+                    navigation.navigate("DetailKelasPembelajar", {
+                      idClass: item.id,
+                    })
+                  }
+                  kelas={item.name}
+                />
+                <Gap width={20} />
+              </>
+            );
+          })}
         </ScrollView>
         <Gap height={40} />
         <Button
@@ -54,7 +78,7 @@ export default function LandingPage({ navigation }) {
           onPress={() => navigation.navigate("ListKelas")}
         />
         <Gap height={10} />
-        <Button
+        {/* <Button
           title={"Ubah Pembelajar"}
           onPress={() => navigation.navigate("UbahPembelajar")}
         />
@@ -63,7 +87,7 @@ export default function LandingPage({ navigation }) {
           title={"Kelas Diajar"}
           onPress={() => navigation.navigate("ListKelasPengajar")}
         />
-        <Gap height={40} />
+        <Gap height={40} /> */}
       </ScrollView>
     </View>
   );

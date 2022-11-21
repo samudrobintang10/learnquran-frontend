@@ -10,10 +10,10 @@ import { useState, useEffect } from "react";
 
 export default function ListKelas({ navigation }) {
   const [allClass, setAllClass] = useState([]);
+
   const getAllClass = async () => {
     try {
       const { data: response } = await ClassAPI.getAllClass();
-      console.log(response?.results?.data);
       setAllClass(response?.results?.data);
     } catch (error) {
       console.log(error);
@@ -39,6 +39,11 @@ export default function ListKelas({ navigation }) {
               teacher_name={item.teacher_name}
               total_student={item.total_student}
               capacity={item.capacity}
+              onPress={() =>
+                navigation.navigate("DetailKelasPembelajar", {
+                  idClass: item.id,
+                })
+              }
             />
           );
         })}

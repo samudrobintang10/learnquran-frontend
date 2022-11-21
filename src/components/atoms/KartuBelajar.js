@@ -9,8 +9,8 @@ export default function KartuBelajar(props) {
   } = props;
   return (
     <View style={styles.kartuBelajar}>
-      <Pressable onPress={onPress} >
-        <Image source={QuranLogo} />
+      <Pressable onPress={onPress} style={styles.ctaDetailKelas}>
+        <Image source={QuranLogo}  />
       <Text style={styles.textTitleClass}>{kelas}</Text>
       </Pressable>
     </View>
@@ -26,12 +26,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "white",
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
   textTitleClass: {
     fontSize: 14,
     fontWeight: "600",
     color: Color.solidGreen,
+    textAlign: "center"
   },
+  ctaDetailKelas: {
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

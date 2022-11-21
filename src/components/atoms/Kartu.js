@@ -22,6 +22,7 @@ export default function Kartu(props) {
             <ButtonSmall
               title={total_student <= capacity ? "Daftar Kelas" : "Kelas Penuh"}
               danger={total_student <= capacity ? false : true}
+              onPress={onPress}
             />
             <Gap height={10} />
             <View>
