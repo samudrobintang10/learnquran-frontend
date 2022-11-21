@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    
-    
   },
   card: {
     margin: 4,
