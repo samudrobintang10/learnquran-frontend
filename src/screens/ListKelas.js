@@ -36,50 +36,53 @@ export default function ListKelas({ navigation }) {
     setAllClass([]);
     try {
       const { data: response } = await ClassAPI.searchClass(text);
-      console.log(response)
+      console.log(response);
       setAllClass(response?.results?.data);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(allClass)
 
   return (
     <View style={styles.container}>
       <BackHeader onPress={() => navigation.goBack()} judul={"Cari Kelas"} />
-
       <Gap height={20} />
       <View style={styles.search}>
         <View style={styles.inputSearch}>
-          <Input onChangeText={(text) => setSearchText(text)} placeholder="Cari kelas..." />
-        </View><Button
+          <Input
+            onChangeText={(text) => setSearchText(text)}
+            placeholder="Cari kelas..."
+          />
+        </View>
+        <Button
           title={
-            <FontAwesomeIcon
-              icon={faSearch}
-              size={20}
-              color={Color.white}
-            />
-          } onPress={() => handleSearch(searchText)}
+            <FontAwesomeIcon icon={faSearch} size={20} color={Color.white} />
+          }
+          onPress={() => handleSearch(searchText)}
         />
       </View>
-      <Gap height={5} />
+      <Gap height={10} />
       <ScrollView style={styles.content}>
-        {allClass.length > 0 && allClass.map((item) => {
-          return (
-            <Kartu
-              key={item.id}
-              title={item.name}
-              teacher_name={item.teacher_name}
-              total_student={item.total_student}
-              capacity={item.capacity}
-              onPress={() =>
-                navigation.navigate("DetailKelasPembelajar", {
-                  idClass: item.id,
-                })
-              }
-            />
-          );
-        })}
+        {allClass.length > 0 &&
+          allClass.map((item) => {
+            return (
+              <>
+                <Kartu
+                  key={item.id}
+                  title={item.name}
+                  teacher_name={item.teacher_name}
+                  total_student={item.total_student}
+                  capacity={item.capacity}
+                  onPress={() =>
+                    navigation.navigate("DetailKelasPembelajar", {
+                      idClass: item.id,
+                    })
+                  }
+                />
+                <Gap height={10} />
+              </>
+            );
+          })}
       </ScrollView>
     </View>
   );
@@ -117,9 +120,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputSearch: {
-    width: 230
+    width: "72%",
   },
-  iconSearch: {
-
-  }
 });
