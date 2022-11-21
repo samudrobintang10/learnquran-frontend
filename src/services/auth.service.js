@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const login = async (email, password) => {
+  console.log(process.env.API_URL)
+  console.log(process.env.API_KEY)
   return axios.post(
     `${process.env.API_URL}/user/login`,
     {
@@ -19,6 +21,8 @@ const register = async (
   phoneNumber,
   role
 ) => {
+  console.log(process.env.API_URL)
+  console.log(process.env.API_KEY)
   return axios.post(
     `${process.env.API_URL}/user/register?condition=` + role,
     {

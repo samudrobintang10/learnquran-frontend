@@ -7,9 +7,16 @@ import BackHeader from "../components/molecules/BackHeader";
 import Color from "../utilities/Color";
 import ClassAPI from "../services/ClassAPI";
 import { useState, useEffect } from "react";
+import { FlatList } from "react-native-web";
+import Input from "../components/atoms/Input";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Loading from "../components/molecules/Loading";
 
 export default function ListKelas({ navigation }) {
   const [allClass, setAllClass] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const getAllClass = async () => {
     try {
@@ -25,13 +32,39 @@ export default function ListKelas({ navigation }) {
     getAllClass();
   }, []);
 
+  const handleSearch = async (text) => {
+    setAllClass([]);
+    try {
+      const { data: response } = await ClassAPI.searchClass(text);
+      console.log(response)
+      setAllClass(response?.results?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(allClass)
+
   return (
     <View style={styles.container}>
       <BackHeader onPress={() => navigation.goBack()} judul={"Cari Kelas"} />
 
       <Gap height={20} />
+      <View style={styles.search}>
+        <View style={styles.inputSearch}>
+          <Input onChangeText={(text) => setSearchText(text)} placeholder="Cari kelas..." />
+        </View><Button
+          title={
+            <FontAwesomeIcon
+              icon={faSearch}
+              size={20}
+              color={Color.white}
+            />
+          } onPress={() => handleSearch(searchText)}
+        />
+      </View>
+      <Gap height={5} />
       <ScrollView style={styles.content}>
-        {allClass.map((item) => {
+        {allClass.length > 0 && allClass.map((item) => {
           return (
             <Kartu
               key={item.id}
@@ -75,4 +108,18 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
   },
+  search: {
+    marginLeft: 19,
+    marginRight: 19,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  inputSearch: {
+    width: 230
+  },
+  iconSearch: {
+
+  }
 });
