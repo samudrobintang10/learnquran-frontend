@@ -14,32 +14,39 @@ import BackHeader from "../components/molecules/BackHeader";
 export default function BuatKelas({ navigation }) {
   return (
     <View style={styles.container}>
-      <BackHeader 
-      onPress={() => navigation.goBack()} 
-      judul ={'Buat Kelas'}>
-      </BackHeader>
+      <BackHeader
+        onPress={() => navigation.goBack()}
+        judul={"Buat Kelas"}
+      ></BackHeader>
       <Gap height={20} />
       <ScrollView style={styles.content}>
-      <View style={styles.row}>
-          
-          <ButtonOuter title={'Edit Kelas'} backgroundColor={Color.solidGreen}
-          text={Color.solidGreen}></ButtonOuter>
+        <View style={styles.row}>
+          <ButtonOuter
+            title={"Edit Kelas"}
+            backgroundColor={Color.solidGreen}
+            text={Color.solidGreen}
+          ></ButtonOuter>
           <Gap width={20} />
-          <ButtonSmall style={styles.buttonKecil} title={'Hapus Kelas'} danger></ButtonSmall>
+          <ButtonSmall
+            style={styles.buttonKecil}
+            title={"Hapus Kelas"}
+            danger
+          ></ButtonSmall>
         </View>
         <Gap height={20}></Gap>
         <Text>Daftar Soal</Text>
         <Gap height={20}></Gap>
         <KartuDetail
-         judul={"Soal 1"}
-         deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}></KartuDetail>
+          judul={"Soal 1"}
+          deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}
+        ></KartuDetail>
         <Gap height={20}></Gap>
         <Text>Daftar Pembelajar</Text>
         <Gap height={20}></Gap>
         <KartuDetail
-        judul={"Bintang Samudro"}
-    
-        onPress={() => navigation.navigate("DetailPembelajar")}></KartuDetail>
+          judul={"Bintang Samudro"}
+          onPress={() => navigation.navigate("DetailPembelajar")}
+        ></KartuDetail>
       </ScrollView>
     </View>
   );
@@ -53,9 +60,9 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   content: {
     paddingLeft: 16,
