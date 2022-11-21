@@ -75,9 +75,6 @@ export default function DetailSoal({ navigation, route }) {
       dispatch({ type: "SET_LOADING", value: false });
     }
   };
-  console.log(
-    detailSubmission?.audio_file ? detailSubmission?.audio_file[0] : false
-  );
 
   async function startRecording() {
     try {
@@ -164,7 +161,6 @@ export default function DetailSoal({ navigation, route }) {
           <View style={styles.content}>
             <RecordingCard
               detailSubmission={detailSubmission}
-              audioFile={detailSubmission.audio_file}
               triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
               submittedStatus={true}
               idTask={idTask}

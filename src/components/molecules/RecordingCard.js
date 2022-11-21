@@ -22,7 +22,6 @@ export default function RecordingCard({
   triggerDeleteSubmitRecorder,
   submittedStatus,
   idTask,
-  audioFile,
   detailSubmission
 }) {
   const [recorderPlaying, setRecorderPlaying] = useState(false);
@@ -31,8 +30,8 @@ export default function RecordingCard({
   const [submittedRecord, setSubmittedRecord] = useState(submittedStatus);
 
   const handlePlayingRecord = async (recorderItem) => {
-    if (audioFile) {
-      const audioUrl = audioFile[0];
+    if (detailSubmission?.audio_file) {
+      const audioUrl = detailSubmission.audio_file[0];
       const sound = new Audio.Sound();
       await sound.loadAsync({
         uri: audioUrl,
