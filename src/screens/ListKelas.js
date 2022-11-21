@@ -7,9 +7,34 @@ import BackHeader from "../components/molecules/BackHeader";
 import Color from "../utilities/Color";
 import ClassAPI from "../services/ClassAPI";
 import { useState, useEffect } from "react";
+import { FlatList } from "react-native-web";
+import Input from "../components/atoms/Input";
 
 export default function ListKelas({ navigation }) {
   const [allClass, setAllClass] = useState([]);
+  const [filterData, setfilterData] = useState([]);
+  const [masterData,setmasterData] = useState([]);
+
+  useEffect(() => {
+    fetchPosts();
+    return () => {
+
+    }
+  })
+
+  const fetchPosts = () => {
+      const apiURL = axios.get(`${process.env.API_URL}/class/search?keyword=kelas messs`);
+    fetch(apiURL)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      setfilterData(responseJson)
+      setmasterData(responseJson)
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
+ 
+
   const getAllClass = async () => {
     try {
       const { data: response } = await ClassAPI.getAllClass();
@@ -25,11 +50,54 @@ export default function ListKelas({ navigation }) {
     getAllClass();
   }, []);
 
+  const searchFilter = (text) => {
+   if (text) {
+    const newData =  masterData.filter((item) => {
+      const itemData = item.title ? item.title.toUpperCase()
+                  : ''.toUpperCase()
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    setfilterData(newData);
+    setsearch(text)
+   }else{
+    setfilterData(masterData);
+    setsearch(text)
+   }
+  }
+
+  const ItemView = ({item}) => {
+    return (
+      <Text>
+        {item.id}{'. '}{item.title.toUpperCase()}
+      </Text>
+    )
+  }
+
+  const ItemSeparatorView = ({item}) => {
+    return (
+      <View
+      style = {{height: 0.5, width:'100%',backgroundColor: '#c8c8c8' }}
+      />
+        
+    )
+  }
+
   return (
     <View style={styles.container}>
       <BackHeader onPress={() => navigation.goBack()} judul={"Cari Kelas"} />
 
       <Gap height={20} />
+      <View>
+        <Input></Input>
+      </View>
+      <FlatList
+      data = {filterData}
+      keyExtractor = {(item, index) => index.toString()}
+      ItemSeparatorComponent = {ItemSeparatorView}
+      renderItem={ItemView}
+      >  
+      </FlatList>
       <ScrollView style={styles.content}>
         {allClass.map((item) => {
           return (
