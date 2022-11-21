@@ -13,18 +13,27 @@ import CardDetailKelas from "../components/molecules/CardDetailKelas";
 import StudentAPI from "../services/StudentAPI";
 import { Alert } from "react-native";
 import { useDispatch } from "react-redux";
+import { getValueFor } from "../utilities/secureStorage";
 
 export default function DetailKelasPembelajar({ navigation, route }) {
   const { idClass } = route.params;
-  
+
   const dispatch = useDispatch();
 
+  const [userData, setUserData] = useState({});
+  const getUserData = async () => {
+    const userDataStorage = await getValueFor("userData");
+    setUserData(userDataStorage);
+  };
+
   const [detailClass, setDetailClass] = useState({});
+  const [listTaskOnClass, setListTaskOnClass] = useState([]);
   const getClass = async (id) => {
     dispatch({ type: "SET_LOADING", value: true });
     try {
       const { data: response } = await ClassAPI.getClassById(id);
       setDetailClass(response?.results?.data);
+      setListTaskOnClass(response?.results?.data?.tasks);
       dispatch({ type: "SET_LOADING", value: false });
     } catch (error) {
       console.log(error);
@@ -81,6 +90,8 @@ export default function DetailKelasPembelajar({ navigation, route }) {
   };
 
   useEffect(() => {
+    setUserData({});
+    getUserData();
     setDetailClass({});
     getClass(idClass);
   }, [idClass]);
@@ -102,11 +113,23 @@ export default function DetailKelasPembelajar({ navigation, route }) {
           text={Color.lightBlue}
         />
         <Gap height={10} />
-        <KartuDetail
-          judul={"Tugas 1"}
-          deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}
-          onPress={() => navigation.navigate("DetailSoal")}
-        />
+        {listTaskOnClass?.map((item) => {
+          return (
+            <>
+              <KartuDetail
+                judul={item.name}
+                deskripsi={item.description}
+                onPress={() =>
+                  navigation.navigate("DetailSoal", {
+                    idTask: item.id,
+                    idStudent: userData.id,
+                  })
+                }
+              />
+              <Gap height={10} />
+            </>
+          );
+        })}
       </ScrollView>
     </View>
   );

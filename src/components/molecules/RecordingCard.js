@@ -12,6 +12,8 @@ import {
   faTrashAlt,
   faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
+import ButtonIcon from "../atoms/ButtonIcon";
+import SoundPlayer from "react-native-sound-player";
 
 export default function RecordingCard({
   recordingLine,
@@ -19,13 +21,26 @@ export default function RecordingCard({
   triggerSubmitRecorder,
   triggerDeleteSubmitRecorder,
   submittedStatus,
+  idTask,
+  audioFile,
+  detailSubmission
 }) {
   const [recorderPlaying, setRecorderPlaying] = useState(false);
+  console.log(detailSubmission)
   const [recordingLineTemp, setRecordingLineTemp] = useState(recordingLine);
   const [submittedRecord, setSubmittedRecord] = useState(submittedStatus);
 
   const handlePlayingRecord = async (recorderItem) => {
-    const record = await recordingLineTemp.sound.replayAsync();
+    if (audioFile) {
+      const audioUrl = audioFile[0];
+      const sound = new Audio.Sound();
+      await sound.loadAsync({
+        uri: audioUrl,
+      });
+      await sound.playAsync();
+    } else {
+      const record = await recorderItem.sound.replayAsync();
+    }
   };
 
   const handleSubmitRecorder = (recorderItem) => {
@@ -38,7 +53,7 @@ export default function RecordingCard({
         text: "OK",
         onPress: () => {
           setSubmittedRecord(true);
-          triggerSubmitRecorder(recorderItem);
+          triggerSubmitRecorder(recorderItem, idTask);
         },
       },
     ]);
@@ -64,31 +79,33 @@ export default function RecordingCard({
     <>
       <Gap height={20} />
       <View key={index} style={styles.row}>
-        <Text style={styles.fill}>
-          Recording {index + 1} - {recordingLine.duration}
-        </Text>
+        {recordingLine && (
+          <Text style={styles.fill}>
+            Recording {index + 1} - {recordingLine.duration}
+          </Text>
+        )}
         <Gap height={20} />
         <View style={styles.player}>
           {!recorderPlaying && (
-            <Button
+            <ButtonIcon
               title={
                 <FontAwesomeIcon
                   icon={faRotate}
-                  size={24}
+                  size={20}
                   color={Color.white}
                 />
               }
               onPress={() => handlePlayingRecord(recordingLineTemp)}
             />
           )}
-          <Gap width={20} />
+          <Gap width={10} />
           {!submittedStatus && (
-            <Button
+            <ButtonIcon
               fivedary
               title={
                 <FontAwesomeIcon
                   icon={faPaperPlane}
-                  size={24}
+                  size={20}
                   color={Color.white}
                 />
               }
@@ -96,10 +113,10 @@ export default function RecordingCard({
             />
           )}
           {submittedStatus && (
-            <Button
+            <ButtonIcon
               fouthdary
               title={
-                <FontAwesomeIcon icon={faTrash} size={24} color={Color.white} />
+                <FontAwesomeIcon icon={faTrash} size={20} color={Color.white} />
               }
               onPress={() => handleCancelSubmitRecorder(recordingLineTemp)}
             />
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
   },
   player: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   fill: {

@@ -13,39 +13,71 @@ import Kartu from "../components/atoms/Kartu";
 import BackHeader from "../components/molecules/BackHeader";
 import { Audio } from "expo-av";
 import RecordingCard from "../components/molecules/RecordingCard";
+import { useEffect } from "react";
+import TaskAPI from "../services/TaskAPI";
+import { useDispatch } from "react-redux";
+import { getValueFor } from "../utilities/secureStorage";
+import SubmissionAPI from "../services/SubmissionAPI";
 
+export default function DetailSoal({ navigation, route }) {
+  const { idTask, idStudent } = route.params;
+  const dispatch = useDispatch();
 
-export default function DetailSoal({ navigation }) {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
 
-  const triggerSubmitRecorder = async (item) => {
+  const triggerSubmitRecorder = async (item, idTaskSubmit) => {
     const uri = item.file;
     let uriParts = uri.split(".");
     let fileType = uriParts[uriParts.length - 1];
 
     let formData = new FormData();
     formData.append("file", {
-      uri,
+      uri: uri,
       name: `recording.${fileType}`,
       type: `audio/x-${fileType}`,
     });
-    item.submitted = true
-    setRecordings([item]);
+    formData.append("duration", {
+      length: item.duration,
+    });
+    item.submitted = true;
+    setRecordings([]);
 
-    // await axios.post(
-    //   `${process.env.API_URL}/submission/upload/` + id,
-    //   formData,
-    //   { headers: { apiKey: process.env.API_KEY } }
-    // );
+    SubmissionAPI.submitRecording(formData, idTaskSubmit)
+      .then((response) => {
+        navigation.replace("DetailSoal", {
+          idTask: idTask,
+          idStudent: idStudent,
+        });
+      })
+      .catch((error) => console.log(error));    
 
-    console.log(formData);
+    setDetailTask({});
+    getDetailTask(idTask, idStudent);
   };
 
   const triggerDeleteSubmitRecorder = async (item) => {
     setRecordings([]);
   };
+
+  const [detailTask, setDetailTask] = useState({});
+  const [detailSubmission, setDetailSubmission] = useState({});
+  const getDetailTask = async (id, id_student) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    try {
+      const { data: response } = await TaskAPI.getTask(id, id_student);
+      setDetailTask(response?.results?.data?.task);
+      setDetailSubmission(response?.results?.data?.submission);
+      dispatch({ type: "SET_LOADING", value: false });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "SET_LOADING", value: false });
+    }
+  };
+  console.log(
+    detailSubmission?.audio_file ? detailSubmission?.audio_file[0] : false
+  );
 
   async function startRecording() {
     try {
@@ -57,7 +89,7 @@ export default function DetailSoal({ navigation }) {
         });
 
         const { recording } = await Audio.Recording.createAsync(
-          Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
         );
         setRecording(recording);
       } else {
@@ -78,11 +110,16 @@ export default function DetailSoal({ navigation }) {
       sound: sound,
       duration: getDurationFormatted(status.durationMillis),
       file: recording.getURI(),
-      submitted: false
+      submitted: false,
     });
 
     setRecordings(updatedRecordings);
   }
+
+  useEffect(() => {
+    setDetailTask({});
+    getDetailTask(idTask, idStudent);
+  }, [idTask, idStudent]);
 
   function getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
@@ -101,6 +138,7 @@ export default function DetailSoal({ navigation }) {
           triggerSubmitRecorder={triggerSubmitRecorder}
           triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
           submittedStatus={recordingLine.submitted}
+          idTask={idTask}
         />
       );
     });
@@ -112,12 +150,35 @@ export default function DetailSoal({ navigation }) {
       <Gap height={20} />
       <View style={styles.content}>
         <KartuSoal
-          judul={"Soal 1"}
-          header={"Al-Fatihah"}
-          deskripsi={"Ayat 1-5"}
+          judul={detailTask.name}
+          header={detailTask.description}
           onPress={recording ? stopRecording : startRecording}
         />
       </View>
+      <Gap height={20} />
+      {detailSubmission.audio_file && (
+        <>
+          <View style={styles.content}>
+            <Text style={styles.recordTitling}>Submitted Record</Text>
+          </View>
+          <View style={styles.content}>
+            <RecordingCard
+              detailSubmission={detailSubmission}
+              audioFile={detailSubmission.audio_file}
+              triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
+              submittedStatus={true}
+              idTask={idTask}
+            />
+          </View>
+        </>
+      )}
+
+      <Gap height={20} />
+      {recordings.length > 0 && (
+        <View style={styles.content}>
+          <Text style={styles.recordTitling}>New Record</Text>
+        </View>
+      )}
       <ScrollView style={styles.content}>{getRecordingLines()}</ScrollView>
     </View>
   );
@@ -149,5 +210,11 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 16,
+  },
+  recordTitling: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#000",
+    paddingLeft: 10,
   },
 });

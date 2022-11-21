@@ -22,7 +22,7 @@ export default function KartuSoal(props) {
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.row}>
-          <View style={{ justifyContent: "center" }}>
+          <View style={{ justifyContent: "center", width: 190 }}>
             <Text style={styles.baseText}>{judul}</Text>
             <Gap height={10} />
             <Text style={styles.headerText}>{header}</Text>
