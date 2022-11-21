@@ -1,11 +1,16 @@
 {
   "expo": {
-    "name": "learnquran-frontend",
-    "slug": "learnquran-frontend",
+    "name": "Belajar Quran",
+    "slug": "belajarQuran",
+    "privacy": "public",
+    "description": "An application for People who wants to learn Quran via Voice Notes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "packagerOpts": {
+      "sourceExts": ["cjs"]
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

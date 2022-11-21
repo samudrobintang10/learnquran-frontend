@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import Color from "../../utilities/Color";
 
-export default function Button(props) {
+export default function ButtonIcon(props) {
   const { onPress, title, secondary, tertiary, fouthdary, fivedary } = props;
   let bgColor = Color.solidGreen;
   let textColor = Color.white;
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
   button: (bgColor, borderColor) => ({
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
+    width: 40,
+    height: 40,
+    borderRadius: 100,
     elevation: 3,
     backgroundColor: bgColor,
     borderWidth: 2,

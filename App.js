@@ -1,30 +1,29 @@
-// In App.js in a new project
-
 import * as React from "react";
-import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Splash from "./src/screens/Splash";
-import Login from "./src/screens/Login";
+import Router from "./src/router";
+import { Provider, useSelector } from "react-redux";
+import store from "./src/redux/store";
+import Loading from "./src/components/molecules/Loading";
+import { LogBox, StatusBar } from "react-native";
 
-const Stack = createNativeStackNavigator();
+const MainApp = () => {
+  const stateGlobal = useSelector((state) => state);
+  return (
+    <>
+      <NavigationContainer>
+        <StatusBar hidden={true} />
+        <Router />
+      </NavigationContainer>
+      {stateGlobal.loading && <Loading />}
+    </>
+  );
+};
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen
-          name="Splash"
-          component={Splash}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <MainApp />
+    </Provider>
   );
 }
 
