@@ -29,7 +29,6 @@ export default function Login({ navigation }) {
           dispatch({ type: "SET_LOADING", value: false });
         } catch (error) {
           dispatch({ type: "SET_LOADING", value: false });
-          console.log(error);
           Alert.alert(error.message);
         }
       })
