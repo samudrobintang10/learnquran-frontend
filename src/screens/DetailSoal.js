@@ -27,42 +27,9 @@ export default function DetailSoal({ navigation, route }) {
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
 
-  const triggerSubmitRecorder = async (item, idTaskSubmit) => {
-    const uri = item.file;
-    let uriParts = uri.split(".");
-    let fileType = uriParts[uriParts.length - 1];
-
-    let formData = new FormData();
-    formData.append("file", {
-      uri: uri,
-      name: `recording.${fileType}`,
-      type: `audio/x-${fileType}`,
-    });
-    formData.append("duration", {
-      length: item.duration,
-    });
-    item.submitted = true;
-    setRecordings([]);
-
-    SubmissionAPI.submitRecording(formData, idTaskSubmit)
-      .then((response) => {
-        navigation.replace("DetailSoal", {
-          idTask: idTask,
-          idStudent: idStudent,
-        });
-      })
-      .catch((error) => console.log(error));    
-
-    setDetailTask({});
-    getDetailTask(idTask, idStudent);
-  };
-
-  const triggerDeleteSubmitRecorder = async (item) => {
-    setRecordings([]);
-  };
-
   const [detailTask, setDetailTask] = useState({});
   const [detailSubmission, setDetailSubmission] = useState({});
+
   const getDetailTask = async (id, id_student) => {
     dispatch({ type: "SET_LOADING", value: true });
     try {
@@ -75,9 +42,50 @@ export default function DetailSoal({ navigation, route }) {
       dispatch({ type: "SET_LOADING", value: false });
     }
   };
-  console.log(
-    detailSubmission?.audio_file ? detailSubmission?.audio_file[0] : false
-  );
+
+  const triggerSubmitRecorder = async (item, idSubmissionSubmit) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    const uri = item.file;
+    let uriParts = uri.split(".");
+    let fileType = uriParts[uriParts.length - 1];
+
+    let formData = new FormData();
+    formData.append("file", {
+      uri: uri,
+      name: `recording.${fileType}`,
+      type: `audio/x-${fileType}`,
+    });
+    formData.append("duration", item.duration);
+    item.submitted = true;
+    setRecordings([]);
+
+    SubmissionAPI.submitRecording(formData, idSubmissionSubmit)
+      .then((response) => {
+        setDetailTask({});
+        setDetailSubmission({});
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert("Recording terkirim", "Anda telah mengupload rekaman", [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.goBack();
+            },
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: "SET_LOADING", value: false });
+      });
+  };
+
+  const triggerDeleteSubmitRecorder = async (idSubmissionSubmit) => {
+    SubmissionAPI.deleteRecording(idSubmissionSubmit)
+      .then((response) => {
+        setDetailSubmission({});
+      })
+      .catch((error) => console.log(error));
+  };
 
   async function startRecording() {
     try {
@@ -138,7 +146,7 @@ export default function DetailSoal({ navigation, route }) {
           triggerSubmitRecorder={triggerSubmitRecorder}
           triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
           submittedStatus={recordingLine.submitted}
-          idTask={idTask}
+          idSubmission={detailSubmission.id}
         />
       );
     });
@@ -164,10 +172,8 @@ export default function DetailSoal({ navigation, route }) {
           <View style={styles.content}>
             <RecordingCard
               detailSubmission={detailSubmission}
-              audioFile={detailSubmission.audio_file}
               triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
               submittedStatus={true}
-              idTask={idTask}
             />
           </View>
         </>

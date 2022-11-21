@@ -23,7 +23,6 @@ export default function DetailPembelajar({ navigation }) {
 
   const [allClassByStudent, setAllClassByStudent] = useState([]);
   const getAllClassByStudent = async () => {
-    console.log("TE<AM");
     try {
       const { data: response } = await ClassAPI.getAllClassByStudent();
       setAllClassByStudent(response?.results?.data);
