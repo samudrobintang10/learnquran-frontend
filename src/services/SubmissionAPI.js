@@ -17,6 +17,15 @@ class SubmissionAPI {
       }
     );
   }
+
+  async deleteRecording(idSubmission) {
+    return axios.delete(
+      `${process.env.API_URL}/submission/delete-audio/` + idSubmission,
+      {
+        headers: await AuthHeader(),
+      }
+    );
+  }
 }
 
 export default new SubmissionAPI();

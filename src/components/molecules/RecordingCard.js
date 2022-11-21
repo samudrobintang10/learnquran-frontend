@@ -21,17 +21,17 @@ export default function RecordingCard({
   triggerSubmitRecorder,
   triggerDeleteSubmitRecorder,
   submittedStatus,
-  idTask,
+  idSubmission,
   detailSubmission
 }) {
   const [recorderPlaying, setRecorderPlaying] = useState(false);
-  console.log(detailSubmission)
+
   const [recordingLineTemp, setRecordingLineTemp] = useState(recordingLine);
   const [submittedRecord, setSubmittedRecord] = useState(submittedStatus);
 
   const handlePlayingRecord = async (recorderItem) => {
     if (detailSubmission?.audio_file) {
-      const audioUrl = detailSubmission.audio_file[0];
+      const audioUrl = detailSubmission.audio_file_url[0];
       const sound = new Audio.Sound();
       await sound.loadAsync({
         uri: audioUrl,
@@ -52,13 +52,13 @@ export default function RecordingCard({
         text: "OK",
         onPress: () => {
           setSubmittedRecord(true);
-          triggerSubmitRecorder(recorderItem, idTask);
+          triggerSubmitRecorder(recorderItem, idSubmission);
         },
       },
     ]);
   };
 
-  const handleCancelSubmitRecorder = (recorderItem) => {
+  const handleDeleteSubmitRecorder = (recorderItem) => {
     Alert.alert("Submit Recording", "Yakin anda ingin menghapus rekaman ini?", [
       {
         text: "Cancel",
@@ -81,6 +81,12 @@ export default function RecordingCard({
         {recordingLine && (
           <Text style={styles.fill}>
             Recording {index + 1} - {recordingLine.duration}
+          </Text>
+        )}
+        {detailSubmission?.audio_file && (
+          <Text>
+            {detailSubmission.audio_file}{" "}
+            {detailSubmission.duration && " - " + detailSubmission.duration}
           </Text>
         )}
         <Gap height={20} />
@@ -117,7 +123,7 @@ export default function RecordingCard({
               title={
                 <FontAwesomeIcon icon={faTrash} size={20} color={Color.white} />
               }
-              onPress={() => handleCancelSubmitRecorder(recordingLineTemp)}
+              onPress={() => handleDeleteSubmitRecorder(detailSubmission.id)}
             />
           )}
         </View>
