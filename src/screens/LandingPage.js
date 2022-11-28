@@ -37,7 +37,6 @@ export default function LandingPage({ navigation, route }) {
     try {
       const { data: response } = await ClassAPI.getAllClassByTeacher();
       setAllClassByTeacher(response?.results?.data);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

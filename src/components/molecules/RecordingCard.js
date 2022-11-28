@@ -117,7 +117,7 @@ export default function RecordingCard({
               onPress={() => handleSubmitRecorder(recordingLineTemp)}
             />
           )}
-          {submittedStatus && (
+          {submittedStatus && triggerDeleteSubmitRecorder && (
             <ButtonIcon
               fouthdary
               title={

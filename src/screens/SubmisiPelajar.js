@@ -9,51 +9,65 @@ import BackHeader from "../components/molecules/BackHeader";
 import Color from "../utilities/Color";
 import { useState, useEffect } from "react";
 import ClassAPI from "../services/ClassAPI";
+import TaskAPI from "../services/TaskAPI";
 
-export default function ListKelasPengajar({ navigation }) {
-  const [allClassByTeacher, setAllClassByTeacher] = useState([]);
-  const getAllClassByTeacher = async () => {
+export default function SubmisiPelajar({ navigation, route }) {
+  const { idStudent, idClass } = route.params;
+  const [allTaskByStudentInClass, setAllTaskByStudentInClass] = useState([]);
+  const getAllTaskByStudentInClass = async () => {
     try {
-      const { data: response } = await ClassAPI.getAllClassByTeacher();
-      setAllClassByTeacher(response?.results?.data);
+      const { data: response } = await TaskAPI.getAllStudentTaskByClass(
+        idStudent,
+        idClass
+      );
+      setAllTaskByStudentInClass(response?.results?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    setAllClassByTeacher([]);
-    getAllClassByTeacher();
+    const unsubscribe = navigation.addListener("focus", () => {
+      setAllTaskByStudentInClass([]);
+      getAllTaskByStudentInClass();
+    });
+
+    return unsubscribe;
   }, []);
 
   return (
     <View style={styles.container}>
       <BackHeader
         onPress={() => navigation.goBack()}
-        judul={"Kelas Pengajar"}
+        judul={"Detail Submisi"}
       />
       <Gap height={10} />
       <ScrollView style={styles.content}>
-        <View style={styles.content2}>
-          <ButtonSmall
-            title={"Buat Kelas"}
-            onPress={() => navigation.navigate("BuatKelas")}
-          />
-          <Gap height={10} />
-        </View>
-        {allClassByTeacher.map((item) => {
+        {allTaskByStudentInClass.map((item) => {
           return (
             <>
               <KartuDetail
                 judul={item?.name}
                 deskripsi={item?.teacher_name}
-                onPress={() =>
-                  navigation.navigate("DetailKelasPengajar", {
-                    idClass: item.id,
-                  })
-                }
-                teritary
-                buttonName="Detail"
+                onPress={() => {
+                  if (item?.Submissions[0].status === "Sudah submit") {
+                    navigation.navigate("FormNilaiSubmisi", {
+                      idTask: item.id,
+                      idStudent: idStudent,
+                    });
+                  } else if (item?.Submissions[0].status === "Telah dinilai") {
+                    navigation.navigate("DetailNilaiSubmisi", {
+                      idTask: item.id,
+                      idStudent: idStudent,
+                    });
+                  } else {
+                    console.log("BELUM SUBMIT");
+                  }
+                }}
+                secondary={item?.Submissions[0].status === "Sudah submit"}
+                red={item?.Submissions[0].status === "Belum submit"}
+                green={item?.Submissions[0].status === "Telah dinilai"}
+                buttonName={item?.Submissions[0].status}
               />
               <Gap height={10} />
             </>

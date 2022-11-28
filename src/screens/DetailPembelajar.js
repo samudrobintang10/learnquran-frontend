@@ -75,6 +75,8 @@ export default function DetailPembelajar({ navigation }) {
                     idClass: item.id,
                   })
                 }
+                teritary
+                buttonName="Detail"
               />
               <Gap height={10} />
             </>

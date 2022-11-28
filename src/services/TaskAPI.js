@@ -13,6 +13,17 @@ class TaskAPI {
     );
   }
 
+  async getAllStudentTaskByClass(id_student, id_class) {
+    console.log(process.env.API_URL);
+    console.log(process.env.API_KEY);
+    return axios.get(
+      `${process.env.API_URL}/task/all?student_id=${id_student}&class_id=${id_class}`,
+      {
+        headers: await AuthHeader(),
+      }
+    );
+  }
+
   async createTask(name, description, idClass) {
     console.log(process.env.API_URL);
     console.log(process.env.API_KEY);
