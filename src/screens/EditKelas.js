@@ -9,20 +9,22 @@ import { useDispatch } from "react-redux";
 import ClassAPI from "../services/ClassAPI";
 import { Alert } from "react-native";
 import { useState } from "react";
+import { useEffect } from "react";
 
-export default function BuatKelas({ navigation }) {
+export default function EditKelas({ navigation, route }) {
   const dispatch = useDispatch();
+  const { idClass } = route.params;
   const [namaKelas, setNamaKelas] = useState();
   const [kapasitas, setKapasitas] = useState();
 
-  const handleKelasBaru = async () => {
+  const handleKelasUbah = async () => {
     dispatch({ type: "SET_LOADING", value: true });
-    ClassAPI.createClass(namaKelas, kapasitas)
+    ClassAPI.editClass(idClass, namaKelas, kapasitas)
       .then((response) => {
         dispatch({ type: "SET_LOADING", value: false });
         Alert.alert(
-          "Berhasil Menambah Kelas",
-          "Anda berhasil menambahkan kelas baru!",
+          "Berhasil Mengubah Kelas",
+          "Anda berhasil mengubah data kelas!",
           [
             {
               text: "OK",
@@ -35,17 +37,37 @@ export default function BuatKelas({ navigation }) {
       })
       .catch((error) => {
         dispatch({ type: "SET_LOADING", value: false });
+        console.log(error)
         Alert.alert(error.message);
       });
   };
 
+  const getClass = async (id) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    try {
+      const { data: response } = await ClassAPI.getClassById(id);
+      setNamaKelas(response?.results?.data?.name);
+      setKapasitas(response?.results?.data?.capacity);
+      dispatch({ type: "SET_LOADING", value: false });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "SET_LOADING", value: false });
+    }
+  };
+
+  useEffect(() => {
+    getClass(idClass);
+  }, [idClass]);
+
   return (
     <View style={styles.container}>
-      <BackHeader onPress={() => navigation.goBack()} judul={"Buat Kelas"} />
+      <BackHeader onPress={() => navigation.goBack()} judul={"Ubah Kelas"} />
       <Gap height={20} />
       <ScrollView style={styles.content}>
         <Kelas
-          handleKelas={handleKelasBaru}
+          handleKelas={handleKelasUbah}
+          name={namaKelas}
+          total_student={kapasitas?.toString()}
           handleKapasitas={(num) => setKapasitas(num)}
           handleNamaKelas={(text) => setNamaKelas(text)}
         />

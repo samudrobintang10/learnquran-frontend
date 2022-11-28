@@ -15,7 +15,7 @@ export default function SimpleCardHeader(props) {
     backgroundColor,
     text,
     handleLogout,
-    handleUbahPembelajar,
+    handleUbah,
   } = props;
   return (
     <Card style={styles.card}>
@@ -35,7 +35,7 @@ export default function SimpleCardHeader(props) {
                 title={firstButtonText}
                 backgroundColor={backgroundColor}
                 text={text}
-                onPress={handleUbahPembelajar}
+                onPress={handleUbah}
               ></ButtonOuter>
               <Gap width={10}></Gap>
               <ButtonSmall

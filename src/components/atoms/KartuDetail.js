@@ -14,7 +14,7 @@ export default function KartuDetail(props) {
             <Text style={styles.secondaryText}>{deskripsi}</Text>
           </View>
           <View>
-            <ButtonSmall onPress={onPress} title={'Detail'} teritary/>
+            {onPress && <ButtonSmall onPress={onPress} title={'Detail'} teritary/>}
           </View>
         </View>
       </Card.Content>

@@ -14,18 +14,18 @@ import { getValueFor } from "../utilities/secureStorage";
 import { useState, useEffect } from "react";
 import ClassAPI from "../services/ClassAPI";
 
-export default function DetailPembelajar({ navigation }) {
+export default function DetailPengajar({ navigation }) {
   const [userData, setUserData] = useState({});
   const getUserData = async () => {
     const userDataStorage = await getValueFor("userData");
     setUserData(userDataStorage);
   };
 
-  const [allClassByStudent, setAllClassByStudent] = useState([]);
-  const getAllClassByStudent = async () => {
+  const [allClassByTeacher, setAllClassByTeacher] = useState([]);
+  const getAllClassByTeacher = async () => {
     try {
-      const { data: response } = await ClassAPI.getAllClassByStudent();
-      setAllClassByStudent(response?.results?.data);
+      const { data: response } = await ClassAPI.getAllClassByTeacher();
+      setAllClassByTeacher(response?.results?.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,8 +34,8 @@ export default function DetailPembelajar({ navigation }) {
   useEffect(() => {
     setUserData({});
     getUserData();
-    setAllClassByStudent([]);
-    getAllClassByStudent();
+    setAllClassByTeacher([]);
+    getAllClassByTeacher();
   }, []);
 
   const handleSignOut = () => {
@@ -61,17 +61,17 @@ export default function DetailPembelajar({ navigation }) {
         />
         <Gap height={10} />
         <View>
-          <Text style={styles.baseText2}>Kelas yang diikuti</Text>
+          <Text style={styles.baseText2}>Kelas yang diajar</Text>
         </View>
         <Gap height={10} />
-        {allClassByStudent.map((item) => {
+        {allClassByTeacher.map((item) => {
           return (
             <>
               <KartuDetail
                 judul={item?.name}
                 deskripsi={item?.teacher_name}
                 onPress={() =>
-                  navigation.navigate("DetailKelasPembelajar", {
+                  navigation.navigate("DetailKelasPengajar", {
                     idClass: item.id,
                   })
                 }

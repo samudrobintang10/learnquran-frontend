@@ -8,7 +8,8 @@ const Input = ({
   onChangeText,
   secureTextEntry,
   disable,
-  keyboardType
+  keyboardType,
+  multiline
 }) => {
   const [border, setBorder] = useState(Color.lightGray);
   const onFocusForm = () => {
@@ -20,15 +21,17 @@ const Input = ({
   return (
     <View>
       <TextInput
-        style={styles.input(border)}
+        style={styles.input(border, multiline)}
         onFocus={onFocusForm}
         onBlur={onBlurForm}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
-        keyboardType={keyboardType ? keyboardType : 'default'}
+        keyboardType={keyboardType ? keyboardType : "default"}
         value={value}
         editable={disable ? false : true}
+        multiline={multiline}
+        numberOfLines={multiline ? 4 : 1}
       />
     </View>
   );
@@ -37,10 +40,11 @@ const Input = ({
 export default Input;
 
 const styles = StyleSheet.create({
-  input: (border) => ({
+  input: (border, multiline) => ({
     borderWidth: 1,
     borderColor: border,
     borderRadius: 6,
     padding: 12,
+    textAlignVertical: multiline ? "top": "center",
   }),
 });

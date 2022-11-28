@@ -7,17 +7,65 @@ import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonSmall from "../components/atoms/ButtonSmall";
 import ButtonOuter from "../components/atoms/ButtonOuter";
-import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
-import UpdateCardHeader from "../components/molecules/ClassCard";
 import BackHeader from "../components/molecules/BackHeader";
+import { useState, useEffect } from "react";
+import ClassAPI from "../services/ClassAPI";
+import { useDispatch } from "react-redux";
+import { Alert } from "react-native";
 
-export default function BuatKelas({ navigation }) {
+export default function DetailKelasPengajar({ navigation, route }) {
+  const { idClass } = route.params;
+  const dispatch = useDispatch();
+  const [detailClass, setDetailClass] = useState({});
+  const [listTaskOnClass, setListTaskOnClass] = useState([]);
+  const getClass = async (id) => {
+    dispatch({ type: "SET_LOADING", value: true });
+    try {
+      const { data: response } = await ClassAPI.getClassById(id);
+      setDetailClass(response?.results?.data);
+      setListTaskOnClass(response?.results?.data?.tasks);
+      dispatch({ type: "SET_LOADING", value: false });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "SET_LOADING", value: false });
+    }
+  };
+
+  const handleHapusKelas = async () => {
+    dispatch({ type: "SET_LOADING", value: true });
+    ClassAPI.deleteClass(idClass)
+      .then((response) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert("Berhasil Menghapus", "Anda berhasil menghapus kelas!", [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.goBack();
+            },
+          },
+        ]);
+      })
+      .catch((error) => {
+        dispatch({ type: "SET_LOADING", value: false });
+        Alert.alert(error.message);
+      });
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setDetailClass({});
+      setListTaskOnClass([]);
+      getClass(idClass);
+    });
+
+    return unsubscribe;
+  }, [idClass]);
   return (
     <View style={styles.container}>
       <BackHeader
         onPress={() => navigation.goBack()}
-        judul={"Buat Kelas"}
-      ></BackHeader>
+        judul={"Detail " + detailClass.name}
+      />
       <Gap height={20} />
       <ScrollView style={styles.content}>
         <View style={styles.row}>
@@ -25,28 +73,65 @@ export default function BuatKelas({ navigation }) {
             title={"Edit Kelas"}
             backgroundColor={Color.solidGreen}
             text={Color.solidGreen}
-          ></ButtonOuter>
+            onPress={() =>
+              navigation.navigate("EditKelas", {
+                idClass: idClass,
+              })
+            }
+          />
           <Gap width={20} />
           <ButtonSmall
             style={styles.buttonKecil}
             title={"Hapus Kelas"}
             danger
-          ></ButtonSmall>
+            onPress={handleHapusKelas}
+          />
         </View>
-        <Gap height={20}></Gap>
+        <Gap height={20} />
         <Text>Daftar Soal</Text>
-        <Gap height={20}></Gap>
-        <KartuDetail
-          judul={"Soal 1"}
-          deskripsi={"Membaca Surat Al-Fatihah ayat 1 - 5"}
-        ></KartuDetail>
-        <Gap height={20}></Gap>
+        <Gap height={20} />
+        {listTaskOnClass?.map((item) => {
+          return (
+            <>
+              <KartuDetail
+                judul={item.name}
+                deskripsi={item.description}
+                onPress={() =>
+                  navigation.navigate("EditSoal", {
+                    idTask: item.id,
+                    idClass: idClass,
+                    name: item.name,
+                    description: item.description
+                  })
+                }
+              />
+              <Gap height={10} />
+            </>
+          );
+        })}
+        <Gap height={10} />
+        <View style={styles.row}>
+          <ButtonSmall
+            title={"Tambah Soal"}
+            TheGreens
+            onPress={() =>
+              navigation.navigate("TambahSoal", {
+                idClass: idClass,
+              })
+            }
+          />
+        </View>
+        <Gap height={20} />
         <Text>Daftar Pembelajar</Text>
-        <Gap height={20}></Gap>
-        <KartuDetail
-          judul={"Bintang Samudro"}
-          onPress={() => navigation.navigate("DetailPembelajar")}
-        ></KartuDetail>
+        <Gap height={20} />
+        {detailClass?.Students?.map((item) => {
+          return (
+            <KartuDetail
+              judul={item.name}
+              onPress={() => navigation.navigate("DetailPembelajar")}
+            />
+          );
+        })}
       </ScrollView>
     </View>
   );

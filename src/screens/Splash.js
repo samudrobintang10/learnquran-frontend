@@ -8,9 +8,10 @@ export default function Splash({ navigation }) {
   useEffect(() => {
     async function isLogged() {
       setTimeout(async () => {
+        const userDataStorage = await getValueFor("userData");
         const isLogged = await getValueFor("accessToken");
         if (isLogged) {
-          navigation.replace("LandingPage");
+          navigation.replace("LandingPage", { roleUser: userDataStorage.role });
         } else {
           navigation.replace("Login");
         }

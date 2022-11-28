@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
         try {
           const { data: response } = await UserAPI.getUserDetail();
           saveItem("userData", response?.results?.data);
-          navigation.replace("LandingPage");
+          navigation.replace("LandingPage", { roleUser: response?.results?.data?.role });
           dispatch({ type: "SET_LOADING", value: false });
         } catch (error) {
           dispatch({ type: "SET_LOADING", value: false });

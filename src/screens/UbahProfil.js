@@ -2,12 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
-import KartuProfile from "../components/atoms/KartuProfile";
-import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
-import ButtonRed from "../components/atoms/ButtonSmall";
-import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
-import UpdateCardHeader from "../components/molecules/ClassCard";
 import BackHeader from "../components/molecules/BackHeader";
 import Input from "../components/atoms/Input";
 import InputSelect from "../components/atoms/InputSelect";
@@ -25,7 +20,7 @@ const genderOptions = [
   { label: "Akhwan", value: 1 },
 ];
 
-export default function UbahPembelajar({ navigation }) {
+export default function UbahProfil({ navigation }) {
   // data will be updated
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +28,7 @@ export default function UbahPembelajar({ navigation }) {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState();
+  const [role, setRole] = useState();
   const setSelectedGender = (genderValue) => {
     setGender(genderValue);
   };
@@ -44,6 +40,7 @@ export default function UbahPembelajar({ navigation }) {
     setEmail(userDataStorage?.email_address);
     setPhoneNumber(userDataStorage?.phone_number);
     setGender(userDataStorage?.gender);
+    setRole(userDataStorage?.role);
   };
 
   const dispatch = useDispatch();
@@ -60,7 +57,7 @@ export default function UbahPembelajar({ navigation }) {
             "Data akun anda telah berhasil diubah"
           );
           dispatch({ type: "SET_LOADING", value: false });
-          navigation.replace("LandingPage");
+          navigation.replace("LandingPage", { role: role });
         })
         .catch((error) => {
           dispatch({ type: "SET_LOADING", value: false });

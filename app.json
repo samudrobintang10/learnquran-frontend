@@ -9,7 +9,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "packagerOpts": {
-      "sourceExts": ["cjs"]
+      "sourceExts": [
+        "cjs"
+      ]
     },
     "splash": {
       "image": "./assets/splash.png",
@@ -17,7 +19,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/73547449-0fea-429e-9600-a7eea5ad2120"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -29,10 +32,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.samudrobintang10.belajarQuran"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "73547449-0fea-429e-9600-a7eea5ad2120"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

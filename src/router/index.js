@@ -7,10 +7,14 @@ import LandingPage from "../screens/LandingPage";
 import DetailPembelajar from "../screens/DetailPembelajar";
 import DetailKelasPembelajar from "../screens/DetailKelasPembelajar";
 import DetailSoal from "../screens/DetailSoal";
-import UbahPembelajar from "../screens/UbahPembelajar";
 import ListKelasPengajar from "../screens/ListKelasPengajar";
 import BuatKelas from "../screens/BuatKelas";
 import DetailKelasPengajar from "../screens/DetailKelasPengajar";
+import DetailPengajar from "../screens/DetailPengajar";
+import UbahProfil from "../screens/UbahProfil";
+import EditKelas from "../screens/EditKelas";
+import TambahSoal from "../screens/TambahSoal";
+import EditSoal from "../screens/EditSoal";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +61,14 @@ export default function Router() {
         }}
       />
       <Stack.Screen
+        name="DetailPengajar"
+        component={DetailPengajar}
+        options={{
+          headerShown: false,
+          animation: "slide_from_left",
+        }}
+      />
+      <Stack.Screen
         name="DetailKelasPembelajar"
         component={DetailKelasPembelajar}
         options={{ headerShown: false }}
@@ -67,8 +79,8 @@ export default function Router() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="UbahPembelajar"
-        component={UbahPembelajar}
+        name="UbahProfil"
+        component={UbahProfil}
         options={{ headerShown: false }}
       />
        <Stack.Screen
@@ -79,6 +91,21 @@ export default function Router() {
       <Stack.Screen
         name="BuatKelas"
         component={BuatKelas}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditKelas"
+        component={EditKelas}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TambahSoal"
+        component={TambahSoal}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditSoal"
+        component={EditSoal}
         options={{ headerShown: false }}
       />
       <Stack.Screen
