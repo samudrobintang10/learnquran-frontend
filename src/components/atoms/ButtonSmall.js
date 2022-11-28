@@ -7,9 +7,8 @@ export default function ButtonSmall(props) {
   let textColor = Color.white;
   let border = Color.lightBlue;
   if (secondary) {
-    bgColor = Color.white;
-    textColor = Color.lightBlue;
-    border = Color.lightBlue;
+    bgColor = Color.lightBlue;
+    textColor = Color.white;
   }
   if (danger) {
     bgColor = 'red';
@@ -27,7 +26,7 @@ export default function ButtonSmall(props) {
     border = Color.solidGreen;
   }
   return (
-    <Pressable style={styles.button(bgColor,border)} onPress={onPress}>
+    <Pressable style={styles.button(bgColor, border)} onPress={onPress}>
       <Text style={styles.text(textColor)}>{title}</Text>
     </Pressable>
   );

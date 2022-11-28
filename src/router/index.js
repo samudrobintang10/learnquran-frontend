@@ -15,6 +15,9 @@ import UbahProfil from "../screens/UbahProfil";
 import EditKelas from "../screens/EditKelas";
 import TambahSoal from "../screens/TambahSoal";
 import EditSoal from "../screens/EditSoal";
+import SubmisiPelajar from "../screens/SubmisiPelajar";
+import FormNilaiSubmisi from "../screens/FormNilaiSubmisi";
+import DetailNilaiSubmisi from "../screens/DetailNilaiSubmisi";
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +109,21 @@ export default function Router() {
       <Stack.Screen
         name="EditSoal"
         component={EditSoal}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SubmisiPelajar"
+        component={SubmisiPelajar}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="FormNilaiSubmisi"
+        component={FormNilaiSubmisi}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DetailNilaiSubmisi"
+        component={DetailNilaiSubmisi}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -101,9 +101,11 @@ export default function DetailKelasPengajar({ navigation, route }) {
                     idTask: item.id,
                     idClass: idClass,
                     name: item.name,
-                    description: item.description
+                    description: item.description,
                   })
                 }
+                teritary
+                buttonName="Detail"
               />
               <Gap height={10} />
             </>
@@ -125,10 +127,18 @@ export default function DetailKelasPengajar({ navigation, route }) {
         <Text>Daftar Pembelajar</Text>
         <Gap height={20} />
         {detailClass?.Students?.map((item) => {
+          console.log(item);
           return (
             <KartuDetail
               judul={item.name}
-              onPress={() => navigation.navigate("DetailPembelajar")}
+              onPress={() =>
+                navigation.navigate("SubmisiPelajar", {
+                  idStudent: item?.StudentAndClass?.student_id,
+                  idClass: idClass,
+                })
+              }
+              teritary
+              buttonName="Detail"
             />
           );
         })}

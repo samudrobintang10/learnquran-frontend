@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, ScrollView, Alert } from "react-native";
 import Button from "../components/atoms/Button";
 import Gap from "../components/atoms/Gap";
-import KartuProfile from "../components/atoms/KartuProfile";
-import KartuDetail from "../components/atoms/KartuDetail";
 import Color from "../utilities/Color";
 import ButtonRed from "../components/atoms/ButtonSmall";
 import SimpleCardHeader from "../components/molecules/SimpleCardHeader";
@@ -18,6 +16,7 @@ import TaskAPI from "../services/TaskAPI";
 import { useDispatch } from "react-redux";
 import { getValueFor } from "../utilities/secureStorage";
 import SubmissionAPI from "../services/SubmissionAPI";
+import KartuDetail from "../components/atoms/KartuDetail";
 
 export default function DetailSoal({ navigation, route }) {
   const { idTask, idStudent } = route.params;
@@ -154,14 +153,30 @@ export default function DetailSoal({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <BackHeader onPress={() => navigation.goBack()} judul={"Detail Soal 1"} />
+      <BackHeader onPress={() => navigation.goBack()} judul={"Detail " + detailTask.name} />
       <Gap height={20} />
       <View style={styles.content}>
-        <KartuSoal
-          judul={detailTask.name}
-          header={detailTask.description}
-          onPress={recording ? stopRecording : startRecording}
-        />
+        {!detailSubmission?.score && (
+          <KartuSoal
+            judul={detailTask.name}
+            header={detailTask.description}
+            onPress={recording ? stopRecording : startRecording}
+          />
+        )}
+        {detailSubmission?.score && (
+          <KartuDetail
+            judul={detailTask.name}
+            deskripsi={detailTask.description}
+            onPress={() =>
+              navigation.navigate("DetailNilaiSubmisi", {
+                idTask: idTask,
+                idStudent: idStudent,
+              })
+            }
+            green={true}
+            buttonName={"Telah dinilai"}
+          />
+        )}
       </View>
       <Gap height={20} />
       {detailSubmission.audio_file && (
@@ -172,13 +187,11 @@ export default function DetailSoal({ navigation, route }) {
           <View style={styles.content}>
             <RecordingCard
               detailSubmission={detailSubmission}
-              triggerDeleteSubmitRecorder={triggerDeleteSubmitRecorder}
               submittedStatus={true}
             />
           </View>
         </>
       )}
-
       <Gap height={20} />
       {recordings.length > 0 && (
         <View style={styles.content}>

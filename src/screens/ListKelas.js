@@ -36,7 +36,6 @@ export default function ListKelas({ navigation }) {
     setAllClass([]);
     try {
       const { data: response } = await ClassAPI.searchClass(text);
-      console.log(response);
       setAllClass(response?.results?.data);
     } catch (error) {
       console.log(error);

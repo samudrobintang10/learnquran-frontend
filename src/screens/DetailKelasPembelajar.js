@@ -53,7 +53,7 @@ export default function DetailKelasPembelajar({ navigation, route }) {
             {
               text: "OK",
               onPress: () => {
-                navigation.navigate("LandingPage");
+                navigation.navigate("LandingPage", { role: userData.role });
               },
             },
           ]
@@ -77,7 +77,7 @@ export default function DetailKelasPembelajar({ navigation, route }) {
             {
               text: "OK",
               onPress: () => {
-                navigation.navigate("LandingPage");
+                navigation.navigate("LandingPage", { role: userData.role });
               },
             },
           ]
@@ -125,6 +125,8 @@ export default function DetailKelasPembelajar({ navigation, route }) {
                     idStudent: userData.id,
                   })
                 }
+                teritary
+                buttonName="Detail"
               />
               <Gap height={10} />
             </>
